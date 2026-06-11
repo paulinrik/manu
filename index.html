@@ -31,11 +31,10 @@
         }
 
         :root {
-            /* Paleta baseada na foto anexada */
-            --bg-gradient: linear-gradient(135deg, #4a1a24 0%, #1f070b 100%); /* Baseado no contorno escuro */
-            --text-primary: #fff0f3; /* Branco rosado de alto contraste */
-            --text-secondary: #ff99ae; /* Rosa médio dos detalhes */
-            --accent-color: #e63e65; /* Rosa vibrante do laço */
+            --bg-gradient: linear-gradient(135deg, #4a1a24 0%, #1f070b 100%);
+            --text-primary: #fff0f3;
+            --text-secondary: #ff99ae;
+            --accent-color: #e63e65;
             --track-opacity: 0.25;
         }
 
@@ -50,24 +49,24 @@
             position: relative;
         }
 
-        h1, h2 {
+        h1, h2, h3 {
             font-family: 'Playfair Display', serif;
             letter-spacing: 0.5px;
         }
 
-        /* TELA INICIAL RESTRUTURADA E CENTRALIZADA */
+        /* TELA INICIAL */
         #lock-screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Centraliza todo o bloco verticalmente */
+            justify-content: center;
             align-items: center;
             padding: 24px;
             background: var(--bg-gradient);
             z-index: 1;
             text-align: center;
-            gap: 6vh; /* Cria um espaçamento elegante e fixo entre o título e a barra */
+            gap: 6vh;
         }
 
         #greeting {
@@ -126,22 +125,21 @@
             width: 54px;
             height: 54px;
             border-radius: 50%;
-            background: var(--accent-color); /* Rosa marcante do laço */
+            background: var(--accent-color);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
             transition: transform 0.1s;
-            /* Seta interna agora em branco rosado para contrastar com o botão rosa */
             background-image: url('data:image/svg+xml;utf8,<svg fill="%23fff0f3" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>');
             background-repeat: no-repeat;
             background-position: center;
         }
 
-        /* ADAPTAÇÃO DAS IMAGENS PNG NAS LATERAIS */
+        /* ANIMAÇÃO DE INCLINAÇÃO SUAVE + ESPELHAMENTO */
         .kitty-container {
             position: absolute;
-            bottom: 25px; /* Altura sutil e elegante no rodapé */
-            width: 85px;  /* Tamanho ideal para exibir o casal */
+            bottom: 25px;
+            width: 85px;
             height: auto;
-            opacity: 0.6; /* Fusão perfeita com o fundo escuro */
+            opacity: 0.6;
             pointer-events: none;
             z-index: 5;
         }
@@ -150,12 +148,32 @@
             width: 100%;
             height: auto;
             display: block;
+            transform: scaleX(-1); /* Espelha as duas imagens horizontalmente */
         }
 
-        .kitty-left { left: 20px; }
-        .kitty-right { right: 20px; }
+        /* Animações com eixos cruzados para um efeito mais dinâmico */
+        .kitty-left { 
+            left: 20px; 
+            transform-origin: bottom center;
+            animation: smoothTiltLeft 5s infinite alternate ease-in-out;
+        }
+        .kitty-right { 
+            right: 20px; 
+            transform-origin: bottom center;
+            animation: smoothTiltRight 5s infinite alternate ease-in-out;
+        }
 
-        /* TELA DA MENSAGEM (CORTINA) */
+        @keyframes smoothTiltLeft {
+            0% { transform: rotate(-22deg); }
+            100% { transform: rotate(22deg); }
+        }
+
+        @keyframes smoothTiltRight {
+            0% { transform: rotate(22deg); }
+            100% { transform: rotate(-22deg); }
+        }
+
+        /* TELA DA MENSAGEM */
         #message-screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -197,7 +215,7 @@
         .message-content h2 {
             font-size: 2.1rem;
             margin-bottom: 25px;
-            color: var(--text-secondary); /* Título interno em rosa suave */
+            color: var(--text-secondary);
             font-style: italic;
         }
 
@@ -208,9 +226,104 @@
             font-weight: 300;
         }
 
-        /* Botão adequado à nova identidade */
+        /* TELA DO CONTADOR (CENÁRIO 3) */
+        #counter-screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-gradient);
+            background-color: #1f070b;
+            color: var(--text-primary);
+            z-index: 30;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 35px;
+            text-align: center;
+            
+            transform: translateY(100%);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #counter-screen.active {
+            transform: translateY(0);
+        }
+
+        /* Estilização da Colagem de Fotos ao Fundo */
+        .photo-collage-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden;
+            z-index: 31;
+            opacity: 0.18; /* Suave para dar profundidade e manter a leitura excelente */
+            pointer-events: none;
+        }
+
+        .collage-img {
+            position: absolute;
+            width: 110px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        /* Distribuição das fotos pelas extremidades da tela */
+        .img1 { top: 8%; left: -10px; transform: rotate(-15deg); width: 120px; }
+        .img2 { top: 12%; right: -15px; transform: rotate(12deg); width: 105px; }
+        .img3 { bottom: 28%; left: -20px; transform: rotate(18deg); width: 115px; }
+        .img4 { bottom: 25%; right: -10px; transform: rotate(-12deg); width: 130px; }
+
+        .counter-container {
+            z-index: 35; /* Fica acima das fotos borradas/transparentes */
+            max-width: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .counter-title {
+            font-size: 2.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .counter-box {
+            background: rgba(230, 62, 101, 0.08);
+            border: 1px solid rgba(255, 153, 174, 0.2);
+            padding: 30px 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 35px;
+            width: 100%;
+        }
+
+        .counter-text {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            font-weight: 400;
+        }
+
+        .days-highlight {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: var(--text-primary);
+            display: block;
+            font-weight: 600;
+            margin: 5px 0;
+            text-shadow: 0 2px 10px rgba(230, 62, 101, 0.4);
+        }
+
+        .since-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 10px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        /* Botões de Ação */
         .close-btn {
-            margin-top: 45px;
+            margin-top: 20px;
             padding: 12px 32px;
             background: rgba(230, 62, 101, 0.1);
             border: 1.5px solid var(--accent-color);
@@ -254,7 +367,31 @@
         <div class="message-content">
             <h2>Mensagem de Hoje</h2>
             <p id="daily-message">Carregando nosso momento...</p>
-            <button class="close-btn" onclick="lockScreen()">Voltar</button>
+            <button class="close-btn" onclick="goToCounterScreen()">Voltar</button>
+        </div>
+    </div>
+
+    <div id="counter-screen">
+        <div class="photo-collage-bg">
+            <img src="foto1.jpg" class="collage-img img1" onerror="this.src='hellokitty.png'">
+            <img src="hk_foto1.png" class="collage-img img2" onerror="this.src='hellokitty.png'">
+            <img src="foto2.jpg" class="collage-img img3" onerror="this.src='hellokitty.png'">
+            <img src="hk_foto2.png" class="collage-img img4" onerror="this.src='hellokitty.png'">
+        </div>
+
+        <div class="counter-container">
+            <h2 class="counter-title">Nosso Amor</h2>
+            
+            <div class="counter-box">
+                <p class="counter-text">
+                    Juntos há 
+                    <span id="days-count" class="days-highlight">0</span> 
+                    dias.
+                </p>
+                <p class="since-text">Contando desde 25 de abril de 2026.</p>
+            </div>
+
+            <button class="close-btn" onclick="resetToLock()">Início</button>
         </div>
     </div>
 
@@ -299,9 +436,25 @@
             document.getElementById("daily-message").innerText = messages[messageIndex];
         }
 
-        // 3. BARRA SLIDER FLUIDA
+        // 3. CÁLCULO DO CONTADOR DE DIAS AUTOMÁTICO
+        function calculateDaysTogether() {
+            const startDate = new Date("2026-04-25T00:00:00");
+            const today = new Date();
+            
+            // Força o cálculo considerando apenas as datas sem fuso horário quebrando
+            startDate.setHours(0,0,0,0);
+            today.setHours(0,0,0,0);
+            
+            const diffTime = Math.abs(today - startDate);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            document.getElementById("days-count").innerText = diffDays;
+        }
+
+        // 4. LOGICA DE TRANSIÇÃO DAS TELAS
         const slider = document.getElementById("unlock-slider");
         const messageScreen = document.getElementById("message-screen");
+        const counterScreen = document.getElementById("counter-screen");
 
         slider.addEventListener("input", function() {
             const val = this.value;
@@ -341,8 +494,18 @@
             if (navigator.vibrate) navigator.vibrate(20);
         }
 
-        function lockScreen() {
+        // Transição: Sai da mensagem e entra no Contador
+        function goToCounterScreen() {
             messageScreen.classList.remove("unlocked");
+            setTimeout(() => {
+                calculateDaysTogether(); // Roda o cálculo dinâmico
+                counterScreen.classList.add("active");
+            }, 500);
+        }
+
+        // Retorna tudo do contador para a tela inicial trancada
+        function resetToLock() {
+            counterScreen.classList.remove("active");
             setTimeout(() => {
                 slider.value = 0;
                 document.documentElement.style.setProperty('--track-opacity', 0.25);
@@ -358,8 +521,10 @@
             });
         }
 
+        // Inicializadores
         updateGreeting();
         updateDailyMessage();
+        calculateDaysTogether();
         setInterval(updateGreeting, 60000);
     </script>
 </body>
