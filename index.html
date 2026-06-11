@@ -10,7 +10,7 @@
     <link rel="apple-touch-icon" href="icone.png">
 
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#1a0933">
+    <meta name="theme-color" content="#1f070b">
     <link rel="manifest" href="manifest.json">
 
     <title>Para Meu Amor</title>
@@ -27,20 +27,22 @@
             padding: 0;
             user-select: none;
             -webkit-user-select: none;
-            -webkit-tap-highlight-color: transparent; /* Remove o flash azul ao tocar */
+            -webkit-tap-highlight-color: transparent;
         }
 
         :root {
-            --bg-gradient: linear-gradient(135deg, #2d124d 0%, #140524 100%);
-            --text-primary: #ffd3e0;
-            --text-secondary: #b399cc;
+            /* Paleta baseada na foto anexada */
+            --bg-gradient: linear-gradient(135deg, #4a1a24 0%, #1f070b 100%); /* Baseado no contorno escuro */
+            --text-primary: #fff0f3; /* Branco rosado de alto contraste */
+            --text-secondary: #ff99ae; /* Rosa médio dos detalhes */
+            --accent-color: #e63e65; /* Rosa vibrante do laço */
             --track-opacity: 0.25;
         }
 
         body {
             font-family: 'Poppins', sans-serif;
             background: var(--bg-gradient);
-            background-color: #140524; /* Fallback */
+            background-color: #1f070b;
             color: var(--text-primary);
             overflow: hidden;
             height: 100vh;
@@ -53,25 +55,27 @@
             letter-spacing: 0.5px;
         }
 
-        /* TELA INICIAL */
+        /* TELA INICIAL RESTRUTURADA E CENTRALIZADA */
         #lock-screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: center; /* Centraliza todo o bloco verticalmente */
             align-items: center;
-            /* Padding ajustado para dar espaço aos desenhos embaixo */
-            padding: 20vh 24px 18vh 24px;
+            padding: 24px;
             background: var(--bg-gradient);
             z-index: 1;
             text-align: center;
+            gap: 6vh; /* Cria um espaçamento elegante e fixo entre o título e a barra */
         }
 
         #greeting {
             font-size: 2.6rem;
             color: var(--text-primary);
-            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+            line-height: 1.3;
+            max-width: 90%;
             animation: pulseGlow 4s infinite alternate ease-in-out;
         }
 
@@ -85,8 +89,7 @@
             width: 100%;
             max-width: 290px;
             text-align: center;
-            z-index: 10; /* Garante que fique acima dos desenhos */
-            margin-bottom: 20px;
+            z-index: 10;
         }
 
         .slider-text {
@@ -109,11 +112,11 @@
             -webkit-appearance: none;
             width: 100%;
             height: 54px;
-            background: rgba(255, 211, 224, var(--track-opacity));
+            background: rgba(255, 153, 174, var(--track-opacity));
             border-radius: 30px;
             outline: none;
             transition: background 0.05s linear;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
             cursor: pointer;
         }
 
@@ -123,42 +126,41 @@
             width: 54px;
             height: 54px;
             border-radius: 50%;
-            background: var(--text-primary);
+            background: var(--accent-color); /* Rosa marcante do laço */
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
             transition: transform 0.1s;
-            background-image: url('data:image/svg+xml;utf8,<svg fill="%232d124d" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>');
+            /* Seta interna agora em branco rosado para contrastar com o botão rosa */
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%23fff0f3" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>');
             background-repeat: no-repeat;
             background-position: center;
         }
 
-        /* DESENHOS HELLO KITTY (ATUALIZADOS) */
+        /* ADAPTAÇÃO DAS IMAGENS PNG NAS LATERAIS */
         .kitty-container {
             position: absolute;
-            /* Subi a posição para não ficar colado embaixo */
-            bottom: 30px; 
-            width: 70px; /* Ligeiramente menor para maior elegância */
-            height: 60px;
-            opacity: 0.3; /* Traço suave */
+            bottom: 25px; /* Altura sutil e elegante no rodapé */
+            width: 85px;  /* Tamanho ideal para exibir o casal */
+            height: auto;
+            opacity: 0.6; /* Fusão perfeita com o fundo escuro */
             pointer-events: none;
             z-index: 5;
         }
 
-        .kitty-left { left: 20px; }
-        /* A direita não precisa inverter, deixa ela olhando pra mesma direção */
-        .kitty-right { right: 20px; } 
-
-        /* SVG da Hello Kitty mais fiel ao original */
-        .kitty-svg {
+        .kitty-container img {
             width: 100%;
-            height: 100%;
+            height: auto;
+            display: block;
         }
 
-        /* TELA DA MENSAGEM */
+        .kitty-left { left: 20px; }
+        .kitty-right { right: 20px; }
+
+        /* TELA DA MENSAGEM (CORTINA) */
         #message-screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-gradient);
-            background-color: #140524;
+            background-color: #1f070b;
             color: var(--text-primary);
             z-index: 20;
             display: flex;
@@ -172,7 +174,7 @@
             transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             border-top-left-radius: 35px;
             border-top-right-radius: 35px;
-            box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.7);
         }
 
         #message-screen.unlocked {
@@ -195,22 +197,23 @@
         .message-content h2 {
             font-size: 2.1rem;
             margin-bottom: 25px;
-            color: var(--text-primary);
+            color: var(--text-secondary); /* Título interno em rosa suave */
             font-style: italic;
         }
 
         .message-content p {
             font-size: 1.15rem;
             line-height: 1.7;
-            color: #eee0f5;
+            color: var(--text-primary);
             font-weight: 300;
         }
 
+        /* Botão adequado à nova identidade */
         .close-btn {
             margin-top: 45px;
             padding: 12px 32px;
-            background: rgba(255, 211, 224, 0.05);
-            border: 1.5px solid var(--text-primary);
+            background: rgba(230, 62, 101, 0.1);
+            border: 1.5px solid var(--accent-color);
             color: var(--text-primary);
             border-radius: 25px;
             font-family: 'Poppins', sans-serif;
@@ -222,8 +225,8 @@
         }
         
         .close-btn:active {
-            background: var(--text-primary);
-            color: #2d124d;
+            background: var(--accent-color);
+            color: var(--text-primary);
             transform: scale(0.96);
         }
     </style>
@@ -238,29 +241,12 @@
             <input type="range" id="unlock-slider" min="0" max="100" value="0">
         </div>
 
-        <svg style="display: none;">
-            <symbol id="kitty-shape" viewBox="0 0 100 80">
-                <path d="M50,10 C30,10 10,22 10,40 C10,58 30,70 50,70 C70,70 90,58 90,40 C90,22 70,10 50,10 Z" fill="none" stroke="#ffd3e0" stroke-width="2.5"/>
-                <path d="M22,18 L12,4 C11,3 9,4 9,6 L15,25" fill="none" stroke="#ffd3e0" stroke-width="2.5" stroke-linecap="round"/>
-                <path d="M78,18 L88,4 C89,3 91,4 91,6 L85,25" fill="none" stroke="#ffd3e0" stroke-width="2.5" stroke-linecap="round"/>
-                <circle cx="26" cy="24" r="5" fill="none" stroke="#ffd3e0" stroke-width="2.5"/> <path d="M22,21 C15,15 15,33 22,27 Z" fill="none" stroke="#ffd3e0" stroke-width="2.5"/> <path d="M30,21 C37,15 37,33 30,27 Z" fill="none" stroke="#ffd3e0" stroke-width="2.5"/> <ellipse cx="35" cy="45" rx="2.5" ry="3.5" fill="#ffd3e0"/>
-                <ellipse cx="65" cy="45" rx="2.5" ry="3.5" fill="#ffd3e0"/>
-                <ellipse cx="50" cy="53" rx="3.5" ry="2.5" fill="none" stroke="#ffd3e0" stroke-width="2"/>
-                
-                <line x1="12" y1="42" x2="25" y2="46" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="8" y1="50" x2="23" y2="50" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="12" y1="58" x2="25" y2="54" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="88" y1="42" x2="75" y2="46" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="92" y1="50" x2="77" y2="50" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="88" y1="58" x2="75" y2="54" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-            </symbol>
-        </svg>
-
         <div class="kitty-container kitty-left">
-            <svg class="kitty-svg"><use xlink:href="#kitty-shape"/></svg>
+            <img src="hellokitty.png" alt="Hello Kitty e Daniel">
         </div>
+        
         <div class="kitty-container kitty-right">
-            <svg class="kitty-svg"><use xlink:href="#kitty-shape"/></svg>
+            <img src="hellokitty.png" alt="Hello Kitty e Daniel">
         </div>
     </div>
 
@@ -273,11 +259,6 @@
     </div>
 
     <script>
-        // Tenta forçar modo standalone no JS caso o manifesto falhe
-        if (window.navigator.standalone === false) {
-            // No iOS, avisa que fica melhor instalando
-        }
-
         // 1. SAUDAÇÃO
         function updateGreeting() {
             const now = new Date();
@@ -285,17 +266,17 @@
             const minutes = now.getMinutes();
             const timeInDecimal = hours + (minutes / 60);
 
-            let greeting = "Boa noite meu amor!"; // 19h01 às 05h00
+            let greeting = "Boa noite meu amor!";
 
             if (timeInDecimal > 5.0 && timeInDecimal <= 12.0) {
-                greeting = "Bom dia meu amor!"; // 05h01 às 12h00
+                greeting = "Bom dia meu amor!";
             } else if (timeInDecimal > 12.0 && timeInDecimal <= 19.0) {
-                greeting = "Boa tarde meu amor!"; // 12h01 às 19h00
+                greeting = "Boa tarde meu amor!";
             }
             document.getElementById("greeting").innerText = greeting;
         }
 
-        // 2. MENSAGENS (Adicione quantas quiser aqui)
+        // 2. MENSAGENS DIÁRIAS
         const messages = [
             "Não importa como comece o meu dia, ele sempre fica perfeito quando lembro de você.",
             "Você é a cor que faltava nos meus dias e a paz que minha alma precisava.",
@@ -328,7 +309,7 @@
             const dynamicOpacity = ((100 - val) / 100) * maxOpacity;
             document.documentElement.style.setProperty('--track-opacity', dynamicOpacity);
 
-            if (val > 95) { // Quase no final
+            if (val > 95) {
                 unlockScreen();
             }
         });
@@ -338,7 +319,7 @@
                 let val = parseInt(slider.value);
                 const interval = setInterval(() => {
                     if (val > 0) {
-                        val -= 12; // Retorno mais rápido e gostoso
+                        val -= 12;
                         if (val < 0) val = 0;
                         slider.value = val;
                         const dynamicOpacity = ((100 - val) / 100) * 0.25;
@@ -357,7 +338,6 @@
             messageScreen.classList.add("unlocked");
             slider.value = 100;
             document.documentElement.style.setProperty('--track-opacity', 0);
-            // Pequena vibração ao destravar (se o celular suportar)
             if (navigator.vibrate) navigator.vibrate(20);
         }
 
@@ -369,7 +349,7 @@
             }, 600);
         }
 
-        // REGISTRAR SERVICE WORKER (Necessário para o Chrome aceitar instalar)
+        // REGISTRAR SERVICE WORKER
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
