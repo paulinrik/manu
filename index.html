@@ -133,7 +133,7 @@
             background-position: center;
         }
 
-        /* ANIMAÇÃO DE INCLINAÇÃO SUAVE + ESPELHAMENTO */
+        /* BALANÇO SUAVE + ESPELHAMENTO SELETIVO */
         .kitty-container {
             position: absolute;
             bottom: 25px;
@@ -148,10 +148,13 @@
             width: 100%;
             height: auto;
             display: block;
-            transform: scaleX(-1); /* Espelha as duas imagens horizontalmente */
         }
 
-        /* Animações com eixos cruzados para um efeito mais dinâmico */
+        /* Espelha apenas a imagem de um dos lados (da direita) */
+        .kitty-right img {
+            transform: scaleX(-1); 
+        }
+
         .kitty-left { 
             left: 20px; 
             transform-origin: bottom center;
@@ -249,31 +252,55 @@
             transform: translateY(0);
         }
 
-        /* Estilização da Colagem de Fotos ao Fundo */
+        /* Colagem de Fotos com Animação Física Lenta */
         .photo-collage-bg {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             overflow: hidden;
             z-index: 31;
-            opacity: 0.18; /* Suave para dar profundidade e manter a leitura excelente */
+            opacity: 0.18; 
             pointer-events: none;
         }
 
-        .collage-img {
+        .collage-card {
             position: absolute;
-            width: 110px;
+        }
+
+        .collage-card img {
+            width: 100%;
             height: auto;
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            display: block;
+            transform-origin: center center;
         }
-        /* Distribuição das fotos pelas extremidades da tela */
+
+        /* Balanço de baixa angulação e velocidade reduzida para o fundo */
+        .photo-collage-bg .collage-card:nth-child(odd) img {
+            animation: slowPhotoTiltLeft 8s infinite alternate ease-in-out;
+        }
+        .photo-collage-bg .collage-card:nth-child(even) img {
+            animation: slowPhotoTiltRight 10s infinite alternate ease-in-out;
+        }
+
+        @keyframes slowPhotoTiltLeft {
+            0% { transform: rotate(-7deg); }
+            100% { transform: rotate(7deg); }
+        }
+
+        @keyframes slowPhotoTiltRight {
+            0% { transform: rotate(7deg); }
+            100% { transform: rotate(-7deg); }
+        }
+
+        /* Coordenadas e tamanhos individuais dos cards */
         .img1 { top: 8%; left: -10px; transform: rotate(-15deg); width: 120px; }
         .img2 { top: 12%; right: -15px; transform: rotate(12deg); width: 105px; }
         .img3 { bottom: 28%; left: -20px; transform: rotate(18deg); width: 115px; }
         .img4 { bottom: 25%; right: -10px; transform: rotate(-12deg); width: 130px; }
 
         .counter-container {
-            z-index: 35; /* Fica acima das fotos borradas/transparentes */
+            z-index: 35;
             max-width: 320px;
             display: flex;
             flex-direction: column;
@@ -290,7 +317,7 @@
         .counter-box {
             background: rgba(230, 62, 101, 0.08);
             border: 1px solid rgba(255, 153, 174, 0.2);
-            padding: 30px 25px;
+            padding: 35px 25px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             margin-bottom: 35px;
@@ -313,15 +340,6 @@
             text-shadow: 0 2px 10px rgba(230, 62, 101, 0.4);
         }
 
-        .since-text {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-top: 10px;
-            font-weight: 300;
-            letter-spacing: 0.5px;
-        }
-
-        /* Botões de Ação */
         .close-btn {
             margin-top: 20px;
             padding: 12px 32px;
@@ -373,10 +391,10 @@
 
     <div id="counter-screen">
         <div class="photo-collage-bg">
-            <img src="foto1.jpg" class="collage-img img1" onerror="this.src='hellokitty.png'">
-            <img src="hk_foto1.png" class="collage-img img2" onerror="this.src='hellokitty.png'">
-            <img src="foto2.jpg" class="collage-img img3" onerror="this.src='hellokitty.png'">
-            <img src="hk_foto2.png" class="collage-img img4" onerror="this.src='hellokitty.png'">
+            <div class="collage-card img1"><img src="foto1.jpg" onerror="this.src='hellokitty.png'"></div>
+            <div class="collage-card img2"><img src="hk_foto1.png" onerror="this.src='hellokitty.png'"></div>
+            <div class="collage-card img3"><img src="foto2.jpg" onerror="this.src='hellokitty.png'"></div>
+            <div class="collage-card img4"><img src="hk_foto2.png" onerror="this.src='hellokitty.png'"></div>
         </div>
 
         <div class="counter-container">
@@ -388,7 +406,6 @@
                     <span id="days-count" class="days-highlight">0</span> 
                     dias.
                 </p>
-                <p class="since-text">Contando desde 25 de abril de 2026.</p>
             </div>
 
             <button class="close-btn" onclick="resetToLock()">Início</button>
@@ -396,7 +413,7 @@
     </div>
 
     <script>
-        // 1. SAUDAÇÃO
+        // 1. SAUDAÇÃO TIMELINE
         function updateGreeting() {
             const now = new Date();
             const hours = now.getHours();
@@ -413,7 +430,7 @@
             document.getElementById("greeting").innerText = greeting;
         }
 
-        // 2. MENSAGENS DIÁRIAS
+        // 2. MENSAGENS BANCO DE DADOS
         const messages = [
             "Não importa como comece o meu dia, ele sempre fica perfeito quando lembro de você.",
             "Você é a cor que faltava nos meus dias e a paz que minha alma precisava.",
@@ -436,12 +453,11 @@
             document.getElementById("daily-message").innerText = messages[messageIndex];
         }
 
-        // 3. CÁLCULO DO CONTADOR DE DIAS AUTOMÁTICO
+        // 3. MOTOR DO CONTADOR DE DIAS
         function calculateDaysTogether() {
             const startDate = new Date("2026-04-25T00:00:00");
             const today = new Date();
             
-            // Força o cálculo considerando apenas as datas sem fuso horário quebrando
             startDate.setHours(0,0,0,0);
             today.setHours(0,0,0,0);
             
@@ -451,7 +467,7 @@
             document.getElementById("days-count").innerText = diffDays;
         }
 
-        // 4. LOGICA DE TRANSIÇÃO DAS TELAS
+        // 4. INTERAÇÕES E TRANSIÇÕES DE INTERFACE
         const slider = document.getElementById("unlock-slider");
         const messageScreen = document.getElementById("message-screen");
         const counterScreen = document.getElementById("counter-screen");
@@ -494,16 +510,14 @@
             if (navigator.vibrate) navigator.vibrate(20);
         }
 
-        // Transição: Sai da mensagem e entra no Contador
         function goToCounterScreen() {
             messageScreen.classList.remove("unlocked");
             setTimeout(() => {
-                calculateDaysTogether(); // Roda o cálculo dinâmico
+                calculateDaysTogether();
                 counterScreen.classList.add("active");
             }, 500);
         }
 
-        // Retorna tudo do contador para a tela inicial trancada
         function resetToLock() {
             counterScreen.classList.remove("active");
             setTimeout(() => {
@@ -512,7 +526,7 @@
             }, 600);
         }
 
-        // REGISTRAR SERVICE WORKER
+        // SERVICE WORKER
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
@@ -521,7 +535,6 @@
             });
         }
 
-        // Inicializadores
         updateGreeting();
         updateDailyMessage();
         calculateDaysTogether();
