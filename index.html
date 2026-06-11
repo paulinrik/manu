@@ -442,16 +442,26 @@
             "Meu lugar favorito no mundo é dentro do teu abraço.",
             "Você não é apenas o meu amor, é a minha melhor amiga e minha calmaria."
         ];
+function updateDailyMessage() {
+    const now = new Date();
+    const diaAtual = now.getDate();
+    const mesAtual = now.getMonth(); // ATENÇÃO: No JavaScript, Janeiro é 0, Fevereiro é 1... Junho é 5!
 
-        function updateDailyMessage() {
-            const now = new Date();
-            const start = new Date(now.getFullYear(), 0, 0);
-            const diff = now - start;
-            const oneDay = 1000 * 60 * 60 * 24;
-            const dayOfYear = Math.floor(diff / oneDay);
-            const messageIndex = dayOfYear % messages.length;
-            document.getElementById("daily-message").innerText = messages[messageIndex];
-        }
+    // CÓDIGO DA SURPRESA: Se for dia 12 de Junho (mês 5)
+    if (diaAtual === 11 && mesAtual === 5) {
+        document.getElementById("daily-message").innerText = "Surpresa! ❤️ Hoje é o nosso dia especial e eu preparei isso para te dizer o quanto você é o amor da minha vida!";
+        return; // Esse 'return' impede o código de rodar o resto e mantém a surpresa fixa na tela!
+    }
+
+    // ... o resto do código original continua aqui embaixo igualzinho ...
+    const start = new Date(now.getFullYear(), 0, 0);
+    const diff = now - start;
+    const oneDay = 1000 * 60 * 60 * 24;
+    const dayOfYear = Math.floor(diff / oneDay);
+    const messageIndex = dayOfYear % messages.length;
+    document.getElementById("daily-message").innerText = messages[messageIndex];
+}
+       
 
         // 3. MOTOR DO CONTADOR DE DIAS
         function calculateDaysTogether() {
