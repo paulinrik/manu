@@ -2,10 +2,17 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Para Meu Amor">
+    <link rel="apple-touch-icon" href="icone.png">
+
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1a0933">
+    <link rel="manifest" href="manifest.json">
+
     <title>Para Meu Amor</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,19 +27,20 @@
             padding: 0;
             user-select: none;
             -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent; /* Remove o flash azul ao tocar */
         }
 
         :root {
-            /* Paleta de Cores Coesa: Roxo Profundo e Rosa Pastel */
             --bg-gradient: linear-gradient(135deg, #2d124d 0%, #140524 100%);
-            --text-primary: #ffd3e0; /* Rosa pastel iluminado */
-            --text-secondary: #b399cc; /* Roxo suave para apoio */
-            --track-opacity: 0.25; /* Controlado dinamicamente pelo JS */
+            --text-primary: #ffd3e0;
+            --text-secondary: #b399cc;
+            --track-opacity: 0.25;
         }
 
         body {
             font-family: 'Poppins', sans-serif;
             background: var(--bg-gradient);
+            background-color: #140524; /* Fallback */
             color: var(--text-primary);
             overflow: hidden;
             height: 100vh;
@@ -45,7 +53,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* TELA INICIAL (BLOQUEIO) */
+        /* TELA INICIAL */
         #lock-screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -53,7 +61,8 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 22vh 24px 12vh 24px;
+            /* Padding ajustado para dar espaço aos desenhos embaixo */
+            padding: 20vh 24px 18vh 24px;
             background: var(--bg-gradient);
             z-index: 1;
             text-align: center;
@@ -62,7 +71,7 @@
         #greeting {
             font-size: 2.6rem;
             color: var(--text-primary);
-            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
             animation: pulseGlow 4s infinite alternate ease-in-out;
         }
 
@@ -76,7 +85,8 @@
             width: 100%;
             max-width: 290px;
             text-align: center;
-            z-index: 5; /* Fica acima dos desenhos */
+            z-index: 10; /* Garante que fique acima dos desenhos */
+            margin-bottom: 20px;
         }
 
         .slider-text {
@@ -95,20 +105,18 @@
             100% { transform: translateX(-4px); opacity: 0.4; }
         }
 
-        /* Customização da Barra (Input Range) */
         input[type=range] {
             -webkit-appearance: none;
             width: 100%;
             height: 54px;
-            /* A mágica acontece aqui: a opacidade diminui via JS conforme arrasta, sumindo no fundo */
             background: rgba(255, 211, 224, var(--track-opacity));
             border-radius: 30px;
             outline: none;
             transition: background 0.05s linear;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
         }
 
-        /* Botão de arrastar (Thumb) */
         input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
@@ -116,39 +124,43 @@
             height: 54px;
             border-radius: 50%;
             background: var(--text-primary);
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
             transition: transform 0.1s;
-            /* Seta sequencial interna */
             background-image: url('data:image/svg+xml;utf8,<svg fill="%232d124d" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>');
             background-repeat: no-repeat;
             background-position: center;
         }
 
-        input[type=range]::-webkit-slider-thumb:active {
-            transform: scale(0.94);
-        }
-
-        /* DESENHOS LINHA HELLO KITTY */
+        /* DESENHOS HELLO KITTY (ATUALIZADOS) */
         .kitty-container {
             position: absolute;
-            bottom: -5px;
-            width: 85px;
-            height: 85px;
-            opacity: 0.25; /* Traço bem suave nas laterais */
-            pointer-events: none; /* Não atrapalha o clique ou deslize */
+            /* Subi a posição para não ficar colado embaixo */
+            bottom: 30px; 
+            width: 70px; /* Ligeiramente menor para maior elegância */
+            height: 60px;
+            opacity: 0.3; /* Traço suave */
+            pointer-events: none;
+            z-index: 5;
         }
 
-        .kitty-left { left: 15px; }
-        .kitty-right { right: 15px; transform: scaleX(-1); } /* Inverte o lado direito para simetria */
+        .kitty-left { left: 20px; }
+        /* A direita não precisa inverter, deixa ela olhando pra mesma direção */
+        .kitty-right { right: 20px; } 
 
-        /* TELA DA MENSAGEM (CORTINA) */
+        /* SVG da Hello Kitty mais fiel ao original */
+        .kitty-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* TELA DA MENSAGEM */
         #message-screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-gradient); /* Mesma cor linda da tela inicial */
+            background: var(--bg-gradient);
+            background-color: #140524;
             color: var(--text-primary);
-            z-index: 10;
+            z-index: 20;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -156,12 +168,11 @@
             padding: 35px;
             text-align: center;
             
-            /* Efeito Cortina Fluida vindo de baixo */
             transform: translateY(100%);
             transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             border-top-left-radius: 35px;
             border-top-right-radius: 35px;
-            box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.6);
         }
 
         #message-screen.unlocked {
@@ -191,15 +202,14 @@
         .message-content p {
             font-size: 1.15rem;
             line-height: 1.7;
-            color: #eee0f5; /* Texto ligeiramente mais claro para leitura confortável */
+            color: #eee0f5;
             font-weight: 300;
         }
 
-        /* Botão Voltar Adequado */
         .close-btn {
             margin-top: 45px;
             padding: 12px 32px;
-            background: rgba(255, 211, 224, 0.08);
+            background: rgba(255, 211, 224, 0.05);
             border: 1.5px solid var(--text-primary);
             color: var(--text-primary);
             border-radius: 25px;
@@ -209,7 +219,6 @@
             letter-spacing: 0.5px;
             cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
         
         .close-btn:active {
@@ -229,40 +238,29 @@
             <input type="range" id="unlock-slider" min="0" max="100" value="0">
         </div>
 
-        <div class="kitty-container kitty-left">
-            <svg viewBox="0 0 100 85" width="100%" height="100%">
-                <path d="M 35 24 L 16 8 C 15 15, 18 24, 23 29 C 12 34, 7 46, 7 60 C 7 78, 25 85, 50 85 C 75 85, 93 78, 93 60 C 93 46, 88 34, 77 29 C 82 24, 85 15, 84 8 L 65 24 C 60 21, 55 20, 50 20 C 45 20, 40 21, 35 24 Z" fill="none" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="32" cy="35" r="4" fill="#ffd3e0"/>
-                <path d="M 32 35 C 24 27, 22 41, 32 35 Z" fill="none" stroke="#ffd3e0" stroke-width="1.5"/>
-                <path d="M 32 35 C 40 27, 42 41, 32 35 Z" fill="none" stroke="#ffd3e0" stroke-width="1.5"/>
-                <ellipse cx="36" cy="54" rx="2" ry="3.5" fill="#ffd3e0"/>
-                <ellipse cx="64" cy="54" rx="2" ry="3.5" fill="#ffd3e0"/>
-                <ellipse cx="50" cy="62" rx="3" ry="2" fill="none" stroke="#ffd3e0" stroke-width="1.5"/>
-                <line x1="16" y1="52" x2="4" y2="49" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="14" y1="58" x2="1" y2="58" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="16" y1="64" x2="4" y2="67" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="84" y1="52" x2="96" y2="49" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="86" y1="58" x2="99" y2="58" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="84" y1="64" x2="96" y2="67" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-        </div>
+        <svg style="display: none;">
+            <symbol id="kitty-shape" viewBox="0 0 100 80">
+                <path d="M50,10 C30,10 10,22 10,40 C10,58 30,70 50,70 C70,70 90,58 90,40 C90,22 70,10 50,10 Z" fill="none" stroke="#ffd3e0" stroke-width="2.5"/>
+                <path d="M22,18 L12,4 C11,3 9,4 9,6 L15,25" fill="none" stroke="#ffd3e0" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M78,18 L88,4 C89,3 91,4 91,6 L85,25" fill="none" stroke="#ffd3e0" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="26" cy="24" r="5" fill="none" stroke="#ffd3e0" stroke-width="2.5"/> <path d="M22,21 C15,15 15,33 22,27 Z" fill="none" stroke="#ffd3e0" stroke-width="2.5"/> <path d="M30,21 C37,15 37,33 30,27 Z" fill="none" stroke="#ffd3e0" stroke-width="2.5"/> <ellipse cx="35" cy="45" rx="2.5" ry="3.5" fill="#ffd3e0"/>
+                <ellipse cx="65" cy="45" rx="2.5" ry="3.5" fill="#ffd3e0"/>
+                <ellipse cx="50" cy="53" rx="3.5" ry="2.5" fill="none" stroke="#ffd3e0" stroke-width="2"/>
+                
+                <line x1="12" y1="42" x2="25" y2="46" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
+                <line x1="8" y1="50" x2="23" y2="50" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
+                <line x1="12" y1="58" x2="25" y2="54" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
+                <line x1="88" y1="42" x2="75" y2="46" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
+                <line x1="92" y1="50" x2="77" y2="50" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
+                <line x1="88" y1="58" x2="75" y2="54" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
+            </symbol>
+        </svg>
 
+        <div class="kitty-container kitty-left">
+            <svg class="kitty-svg"><use xlink:href="#kitty-shape"/></svg>
+        </div>
         <div class="kitty-container kitty-right">
-            <svg viewBox="0 0 100 85" width="100%" height="100%">
-                <path d="M 35 24 L 16 8 C 15 15, 18 24, 23 29 C 12 34, 7 46, 7 60 C 7 78, 25 85, 50 85 C 75 85, 93 78, 93 60 C 93 46, 88 34, 77 29 C 82 24, 85 15, 84 8 L 65 24 C 60 21, 55 20, 50 20 C 45 20, 40 21, 35 24 Z" fill="none" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="32" cy="35" r="4" fill="#ffd3e0"/>
-                <path d="M 32 35 C 24 27, 22 41, 32 35 Z" fill="none" stroke="#ffd3e0" stroke-width="1.5"/>
-                <path d="M 32 35 C 40 27, 42 41, 32 35 Z" fill="none" stroke="#ffd3e0" stroke-width="1.5"/>
-                <ellipse cx="36" cy="54" rx="2" ry="3.5" fill="#ffd3e0"/>
-                <ellipse cx="64" cy="54" rx="2" ry="3.5" fill="#ffd3e0"/>
-                <ellipse cx="50" cy="62" rx="3" ry="2" fill="none" stroke="#ffd3e0" stroke-width="1.5"/>
-                <line x1="16" y1="52" x2="4" y2="49" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="14" y1="58" x2="1" y2="58" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="16" y1="64" x2="4" y2="67" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="84" y1="52" x2="96" y2="49" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="86" y1="58" x2="99" y2="58" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="84" y1="64" x2="96" y2="67" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+            <svg class="kitty-svg"><use xlink:href="#kitty-shape"/></svg>
         </div>
     </div>
 
@@ -275,7 +273,12 @@
     </div>
 
     <script>
-        // 1. SAUDAÇÃO BASEADA NO HORÁRIO
+        // Tenta forçar modo standalone no JS caso o manifesto falhe
+        if (window.navigator.standalone === false) {
+            // No iOS, avisa que fica melhor instalando
+        }
+
+        // 1. SAUDAÇÃO
         function updateGreeting() {
             const now = new Date();
             const hours = now.getHours();
@@ -289,11 +292,10 @@
             } else if (timeInDecimal > 12.0 && timeInDecimal <= 19.0) {
                 greeting = "Boa tarde meu amor!"; // 12h01 às 19h00
             }
-
             document.getElementById("greeting").innerText = greeting;
         }
 
-        // 2. MENSAGENS DIÁRIAS (Muda automaticamente todo dia)
+        // 2. MENSAGENS (Adicione quantas quiser aqui)
         const messages = [
             "Não importa como comece o meu dia, ele sempre fica perfeito quando lembro de você.",
             "Você é a cor que faltava nos meus dias e a paz que minha alma precisava.",
@@ -301,7 +303,9 @@
             "Se eu pudesse parar o tempo, seria no momento em que estou com você.",
             "Você é o meu primeiro pensamento ao acordar e o último antes de dormir.",
             "Amar você é a coisa mais fácil e natural que eu já fiz na vida.",
-            "O mundo é muito mais bonito desde que você passou a fazer parte do meu."
+            "O mundo é muito mais bonito desde que você passou a fazer parte do meu.",
+            "Meu lugar favorito no mundo é dentro do teu abraço.",
+            "Você não é apenas o meu amor, é a minha melhor amiga e minha calmaria."
         ];
 
         function updateDailyMessage() {
@@ -310,48 +314,39 @@
             const diff = now - start;
             const oneDay = 1000 * 60 * 60 * 24;
             const dayOfYear = Math.floor(diff / oneDay);
-
             const messageIndex = dayOfYear % messages.length;
             document.getElementById("daily-message").innerText = messages[messageIndex];
         }
 
-        // 3. INTERAÇÃO FLUIDA DA BARRA (Efeito dinâmico de cor)
+        // 3. BARRA SLIDER FLUIDA
         const slider = document.getElementById("unlock-slider");
         const messageScreen = document.getElementById("message-screen");
 
         slider.addEventListener("input", function() {
             const val = this.value;
-            
-            // Conforme arrasta (0 a 100), calcula uma opacidade menor para sumir na cor de fundo
             const maxOpacity = 0.25; 
             const dynamicOpacity = ((100 - val) / 100) * maxOpacity;
-            
-            // Altera a variável CSS em tempo real
             document.documentElement.style.setProperty('--track-opacity', dynamicOpacity);
 
-            if (val > 92) {
+            if (val > 95) { // Quase no final
                 unlockScreen();
             }
         });
 
-        // Efeito elástico (retorno) caso solte antes do final
         function resetSlider() {
-            if (slider.value <= 92) {
-                // Animação suave de retorno para o zero
+            if (slider.value <= 95) {
                 let val = parseInt(slider.value);
                 const interval = setInterval(() => {
                     if (val > 0) {
-                        val -= 8;
+                        val -= 12; // Retorno mais rápido e gostoso
                         if (val < 0) val = 0;
                         slider.value = val;
-                        
-                        // Atualiza a opacidade também na volta
                         const dynamicOpacity = ((100 - val) / 100) * 0.25;
                         document.documentElement.style.setProperty('--track-opacity', dynamicOpacity);
                     } else {
                         clearInterval(interval);
                     }
-                }, 15);
+                }, 10);
             }
         }
 
@@ -362,6 +357,8 @@
             messageScreen.classList.add("unlocked");
             slider.value = 100;
             document.documentElement.style.setProperty('--track-opacity', 0);
+            // Pequena vibração ao destravar (se o celular suportar)
+            if (navigator.vibrate) navigator.vibrate(20);
         }
 
         function lockScreen() {
@@ -372,7 +369,15 @@
             }, 600);
         }
 
-        // Inicializadores
+        // REGISTRAR SERVICE WORKER (Necessário para o Chrome aceitar instalar)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW registrado', reg))
+                    .catch(err => console.log('Erro no SW', err));
+            });
+        }
+
         updateGreeting();
         updateDailyMessage();
         setInterval(updateGreeting, 60000);
