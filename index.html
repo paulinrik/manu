@@ -1,40 +1,32 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <link rel="manifest" href="manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#1a0933">
+    <meta name="theme-color" content="#800020">
     <title>Para Meu Amor</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
 
     <style>
-        /* Configurações Globais */
+        /* Estilos Gerais */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        :root {
-            /* Paleta de Cores Coesa: Roxo Profundo e Rosa Pastel */
-            --bg-gradient: linear-gradient(135deg, #2d124d 0%, #140524 100%);
-            --text-primary: #ffd3e0; /* Rosa pastel iluminado */
-            --text-secondary: #b399cc; /* Roxo suave para apoio */
-            --track-opacity: 0.25; /* Controlado dinamicamente pelo JS */
+            user-select: none; /* Evita selecionar texto ao arrastar */
         }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: var(--bg-gradient);
-            color: var(--text-primary);
-            overflow: hidden;
+            background-color: #ffe6e9; /* Rosa bem suave */
+            color: #4a0011;
+            overflow: hidden; /* Evita rolagem indesejada */
             height: 100vh;
             width: 100vw;
             position: relative;
@@ -42,10 +34,9 @@
 
         h1, h2 {
             font-family: 'Playfair Display', serif;
-            letter-spacing: 0.5px;
         }
 
-        /* TELA INICIAL (BLOQUEIO) */
+        /* TELA DE BLOQUEIO */
         #lock-screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -53,169 +44,141 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 22vh 24px 12vh 24px;
-            background: var(--bg-gradient);
+            padding: 20vh 20px 10vh 20px;
+            background: linear-gradient(135deg, #ffc3ca 0%, #ff9eab 100%);
             z-index: 1;
             text-align: center;
         }
 
         #greeting {
-            font-size: 2.6rem;
-            color: var(--text-primary);
-            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            animation: pulseGlow 4s infinite alternate ease-in-out;
+            font-size: 2.5rem;
+            color: #800020; /* Vermelho vinho */
+            text-shadow: 1px 1px 4px rgba(255,255,255,0.5);
+            animation: pulse 3s infinite alternate;
         }
 
-        @keyframes pulseGlow {
-            0% { transform: scale(1); opacity: 0.9; }
-            100% { transform: scale(1.02); opacity: 1; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.02); }
         }
 
-        /* ÁREA DA BARRA DESLIZANTE */
+        /* ÁREA DO SLIDER */
         .slider-wrapper {
             width: 100%;
-            max-width: 290px;
+            max-width: 300px;
             text-align: center;
-            z-index: 5; /* Fica acima dos desenhos */
         }
 
         .slider-text {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            margin-bottom: 18px;
+            font-size: 1.1rem;
+            color: #800020;
+            margin-bottom: 15px;
             font-style: italic;
-            font-weight: 300;
-            letter-spacing: 1px;
-            animation: slideHint 2.5s infinite ease-in-out;
+            opacity: 0.8;
+            animation: slideHint 2s infinite;
         }
 
         @keyframes slideHint {
-            0% { transform: translateX(-4px); opacity: 0.4; }
-            50% { transform: translateX(4px); opacity: 0.9; }
-            100% { transform: translateX(-4px); opacity: 0.4; }
+            0% { transform: translateX(-5px); opacity: 0.5; }
+            50% { transform: translateX(5px); opacity: 1; }
+            100% { transform: translateX(-5px); opacity: 0.5; }
         }
 
-        /* Customização da Barra (Input Range) */
+        /* Estilizando a barra de arrastar */
         input[type=range] {
             -webkit-appearance: none;
             width: 100%;
-            height: 54px;
-            /* A mágica acontece aqui: a opacidade diminui via JS conforme arrasta, sumindo no fundo */
-            background: rgba(255, 211, 224, var(--track-opacity));
+            height: 50px;
+            background: rgba(255, 255, 255, 0.4);
             border-radius: 30px;
             outline: none;
-            transition: background 0.05s linear;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        /* Botão de arrastar (Thumb) */
         input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 54px;
-            height: 54px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: var(--text-primary);
+            background: #800020;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 4px 10px rgba(128, 0, 32, 0.4);
             transition: transform 0.1s;
-            /* Seta sequencial interna */
-            background-image: url('data:image/svg+xml;utf8,<svg fill="%232d124d" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>');
+            /* Ícone de setinha dentro do botão */
+            background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>');
             background-repeat: no-repeat;
             background-position: center;
         }
 
         input[type=range]::-webkit-slider-thumb:active {
-            transform: scale(0.94);
+            transform: scale(0.95);
         }
-
-        /* DESENHOS LINHA HELLO KITTY */
-        .kitty-container {
-            position: absolute;
-            bottom: -5px;
-            width: 85px;
-            height: 85px;
-            opacity: 0.25; /* Traço bem suave nas laterais */
-            pointer-events: none; /* Não atrapalha o clique ou deslize */
-        }
-
-        .kitty-left { left: 15px; }
-        .kitty-right { right: 15px; transform: scaleX(-1); } /* Inverte o lado direito para simetria */
 
         /* TELA DA MENSAGEM (CORTINA) */
         #message-screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-gradient); /* Mesma cor linda da tela inicial */
-            color: var(--text-primary);
+            background: #800020; /* Fundo vinho na mensagem */
+            color: #fff;
             z-index: 10;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 35px;
+            padding: 30px;
             text-align: center;
             
-            /* Efeito Cortina Fluida vindo de baixo */
+            /* Efeito de Cortina vindo de baixo */
             transform: translateY(100%);
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            border-top-left-radius: 35px;
-            border-top-right-radius: 35px;
-            box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.5);
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); /* Animação bem fluida */
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.2);
         }
 
+        /* Classe ativada pelo JS para subir a cortina */
         #message-screen.unlocked {
             transform: translateY(0);
-            border-radius: 0;
+            border-radius: 0; /* Remove as bordas quando abre completamente */
         }
 
         .message-content {
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s;
-            max-width: 320px;
+            transition: opacity 1s ease 0.5s; /* Aparece suavemente APÓS a cortina subir */
         }
 
         #message-screen.unlocked .message-content {
             opacity: 1;
-            transform: translateY(0);
         }
 
         .message-content h2 {
-            font-size: 2.1rem;
-            margin-bottom: 25px;
-            color: var(--text-primary);
-            font-style: italic;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #ff9eab;
         }
 
         .message-content p {
-            font-size: 1.15rem;
-            line-height: 1.7;
-            color: #eee0f5; /* Texto ligeiramente mais claro para leitura confortável */
-            font-weight: 300;
+            font-size: 1.2rem;
+            line-height: 1.6;
         }
 
-        /* Botão Voltar Adequado */
         .close-btn {
-            margin-top: 45px;
-            padding: 12px 32px;
-            background: rgba(255, 211, 224, 0.08);
-            border: 1.5px solid var(--text-primary);
-            color: var(--text-primary);
-            border-radius: 25px;
+            margin-top: 40px;
+            padding: 10px 25px;
+            background: transparent;
+            border: 2px solid #ff9eab;
+            color: #ff9eab;
+            border-radius: 20px;
             font-family: 'Poppins', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
+            font-size: 1rem;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: all 0.3s;
         }
         
         .close-btn:active {
-            background: var(--text-primary);
-            color: #2d124d;
-            transform: scale(0.96);
+            background: #ff9eab;
+            color: #800020;
         }
     </style>
 </head>
@@ -228,42 +191,6 @@
             <div class="slider-text">deslize para ler</div>
             <input type="range" id="unlock-slider" min="0" max="100" value="0">
         </div>
-
-        <div class="kitty-container kitty-left">
-            <svg viewBox="0 0 100 85" width="100%" height="100%">
-                <path d="M 35 24 L 16 8 C 15 15, 18 24, 23 29 C 12 34, 7 46, 7 60 C 7 78, 25 85, 50 85 C 75 85, 93 78, 93 60 C 93 46, 88 34, 77 29 C 82 24, 85 15, 84 8 L 65 24 C 60 21, 55 20, 50 20 C 45 20, 40 21, 35 24 Z" fill="none" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="32" cy="35" r="4" fill="#ffd3e0"/>
-                <path d="M 32 35 C 24 27, 22 41, 32 35 Z" fill="none" stroke="#ffd3e0" stroke-width="1.5"/>
-                <path d="M 32 35 C 40 27, 42 41, 32 35 Z" fill="none" stroke="#ffd3e0" stroke-width="1.5"/>
-                <ellipse cx="36" cy="54" rx="2" ry="3.5" fill="#ffd3e0"/>
-                <ellipse cx="64" cy="54" rx="2" ry="3.5" fill="#ffd3e0"/>
-                <ellipse cx="50" cy="62" rx="3" ry="2" fill="none" stroke="#ffd3e0" stroke-width="1.5"/>
-                <line x1="16" y1="52" x2="4" y2="49" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="14" y1="58" x2="1" y2="58" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="16" y1="64" x2="4" y2="67" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="84" y1="52" x2="96" y2="49" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="86" y1="58" x2="99" y2="58" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="84" y1="64" x2="96" y2="67" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-        </div>
-
-        <div class="kitty-container kitty-right">
-            <svg viewBox="0 0 100 85" width="100%" height="100%">
-                <path d="M 35 24 L 16 8 C 15 15, 18 24, 23 29 C 12 34, 7 46, 7 60 C 7 78, 25 85, 50 85 C 75 85, 93 78, 93 60 C 93 46, 88 34, 77 29 C 82 24, 85 15, 84 8 L 65 24 C 60 21, 55 20, 50 20 C 45 20, 40 21, 35 24 Z" fill="none" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="32" cy="35" r="4" fill="#ffd3e0"/>
-                <path d="M 32 35 C 24 27, 22 41, 32 35 Z" fill="none" stroke="#ffd3e0" stroke-width="1.5"/>
-                <path d="M 32 35 C 40 27, 42 41, 32 35 Z" fill="none" stroke="#ffd3e0" stroke-width="1.5"/>
-                <ellipse cx="36" cy="54" rx="2" ry="3.5" fill="#ffd3e0"/>
-                <ellipse cx="64" cy="54" rx="2" ry="3.5" fill="#ffd3e0"/>
-                <ellipse cx="50" cy="62" rx="3" ry="2" fill="none" stroke="#ffd3e0" stroke-width="1.5"/>
-                <line x1="16" y1="52" x2="4" y2="49" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="14" y1="58" x2="1" y2="58" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="16" y1="64" x2="4" y2="67" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="84" y1="52" x2="96" y2="49" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="86" y1="58" x2="99" y2="58" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-                <line x1="84" y1="64" x2="96" y2="67" stroke="#ffd3e0" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-        </div>
     </div>
 
     <div id="message-screen">
@@ -275,107 +202,90 @@
     </div>
 
     <script>
-        // 1. SAUDAÇÃO BASEADA NO HORÁRIO
+        // 1. LÓGICA DE TEMPO (Bom dia / Boa tarde / Boa noite)
         function updateGreeting() {
             const now = new Date();
             const hours = now.getHours();
             const minutes = now.getMinutes();
             const timeInDecimal = hours + (minutes / 60);
 
-            let greeting = "Boa noite meu amor!"; // 19h01 às 05h00
+            let greeting = "Boa noite meu amor!"; // Padrão 19:01 às 05:00
 
             if (timeInDecimal > 5.0 && timeInDecimal <= 12.0) {
-                greeting = "Bom dia meu amor!"; // 05h01 às 12h00
+                greeting = "Bom dia meu amor!";
             } else if (timeInDecimal > 12.0 && timeInDecimal <= 19.0) {
-                greeting = "Boa tarde meu amor!"; // 12h01 às 19h00
+                greeting = "Boa tarde meu amor!";
             }
 
             document.getElementById("greeting").innerText = greeting;
         }
 
-        // 2. MENSAGENS DIÁRIAS (Muda automaticamente todo dia)
+        // 2. LÓGICA DO TEXTO DIÁRIO
         const messages = [
             "Não importa como comece o meu dia, ele sempre fica perfeito quando lembro de você.",
             "Você é a cor que faltava nos meus dias e a paz que minha alma precisava.",
             "Cada detalhe seu é um motivo a mais para eu me apaixonar diariamente.",
             "Se eu pudesse parar o tempo, seria no momento em que estou com você.",
             "Você é o meu primeiro pensamento ao acordar e o último antes de dormir.",
-            "Amar você é a coisa mais fácil e natural que eu já fiz na vida.",
-            "O mundo é muito mais bonito desde que você passou a fazer parte do meu."
+            "Amar você é a coisa mais fácil e natural que eu já fiz na vida."
+            // Você pode adicionar dezenas de frases aqui!
         ];
 
         function updateDailyMessage() {
             const now = new Date();
+            // Calcula o dia do ano (1 a 365) para mudar a frase automaticamente
             const start = new Date(now.getFullYear(), 0, 0);
             const diff = now - start;
             const oneDay = 1000 * 60 * 60 * 24;
             const dayOfYear = Math.floor(diff / oneDay);
 
+            // Seleciona a frase com base no dia (faz o loop na lista)
             const messageIndex = dayOfYear % messages.length;
             document.getElementById("daily-message").innerText = messages[messageIndex];
         }
 
-        // 3. INTERAÇÃO FLUIDA DA BARRA (Efeito dinâmico de cor)
+        // 3. LÓGICA DO SLIDER (A cortina)
         const slider = document.getElementById("unlock-slider");
         const messageScreen = document.getElementById("message-screen");
 
+        // Checa a posição do slider quando o usuário está arrastando
         slider.addEventListener("input", function() {
-            const val = this.value;
-            
-            // Conforme arrasta (0 a 100), calcula uma opacidade menor para sumir na cor de fundo
-            const maxOpacity = 0.25; 
-            const dynamicOpacity = ((100 - val) / 100) * maxOpacity;
-            
-            // Altera a variável CSS em tempo real
-            document.documentElement.style.setProperty('--track-opacity', dynamicOpacity);
-
-            if (val > 92) {
+            // Se passar de 90%, destrava
+            if (this.value > 90) {
                 unlockScreen();
             }
         });
 
-        // Efeito elástico (retorno) caso solte antes do final
-        function resetSlider() {
-            if (slider.value <= 92) {
-                // Animação suave de retorno para o zero
-                let val = parseInt(slider.value);
-                const interval = setInterval(() => {
-                    if (val > 0) {
-                        val -= 8;
-                        if (val < 0) val = 0;
-                        slider.value = val;
-                        
-                        // Atualiza a opacidade também na volta
-                        const dynamicOpacity = ((100 - val) / 100) * 0.25;
-                        document.documentElement.style.setProperty('--track-opacity', dynamicOpacity);
-                    } else {
-                        clearInterval(interval);
-                    }
-                }, 15);
+        // Se o usuário soltar antes de 90%, volta pro começo com efeito elástico
+        slider.addEventListener("change", function() {
+            if (this.value <= 90) {
+                this.value = 0;
             }
-        }
-
-        slider.addEventListener("change", resetSlider);
-        slider.addEventListener("touchend", resetSlider);
+        });
+        slider.addEventListener("touchend", function() {
+            if (this.value <= 90) {
+                this.value = 0;
+            }
+        });
 
         function unlockScreen() {
             messageScreen.classList.add("unlocked");
-            slider.value = 100;
-            document.documentElement.style.setProperty('--track-opacity', 0);
+            slider.value = 100; // Trava o slider no final
         }
 
         function lockScreen() {
             messageScreen.classList.remove("unlocked");
             setTimeout(() => {
-                slider.value = 0;
-                document.documentElement.style.setProperty('--track-opacity', 0.25);
-            }, 600);
+                slider.value = 0; // Volta o slider pro começo após a cortina descer
+            }, 500); // Tempo da animação do CSS
         }
 
-        // Inicializadores
+        // Inicialização
         updateGreeting();
         updateDailyMessage();
-        setInterval(updateGreeting, 60000);
+        
+        // Atualiza a saudação caso o app fique aberto na transição de horário
+        setInterval(updateGreeting, 60000); // Checa a cada 1 minuto
     </script>
 </body>
 </html>
