@@ -402,7 +402,7 @@
             
             <div class="counter-box">
                 <p class="counter-text">
-                    Juntos há 
+                    Namorando há 
                     <span id="days-count" class="days-highlight">0</span> 
                     dias.
                 </p>
@@ -448,7 +448,7 @@ function updateDailyMessage() {
     const mesAtual = now.getMonth(); // ATENÇÃO: No JavaScript, Janeiro é 0, Fevereiro é 1... Junho é 5!
 
     // CÓDIGO DA SURPRESA: Se for dia 12 de Junho (mês 5)
-    if (diaAtual === 11 && mesAtual === 5) {
+    if (diaAtual === 12 && mesAtual === 5) {
         document.getElementById("daily-message").innerText = "Nosso primeiro dia dos namorados juntos, acho que você deve imaginar o quanto eu pensava nisso durante todo aquele tempo que estávamos nos conhecendo. Eu não acreditaria se me contassem que um dia estaria vivendo isso tudo com você, e não poderia ser melhor, com você tudo parece perfeito. Manuela, meu corpo te deseja, meu coração pulsa por você e minha alma sente falta da sua quando ficamos longe. Eu te amo, e amo dividir a vida com você, hoje amanhã e sempre.";
         return; // Esse 'return' impede o código de rodar o resto e mantém a surpresa fixa na tela!
     }
