@@ -412,186 +412,191 @@
         </div>
     </div>
 
-    <script>
-        // 1. SAUDAÇÃO TIMELINE
-        function updateGreeting() {
-            const now = new Date();
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const timeInDecimal = hours + (minutes / 60);
+<script>
+    // 1. SAUDAÇÃO TIMELINE
+    function updateGreeting() {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const timeInDecimal = hours + (minutes / 60);
 
-            let greeting = "Boa noite meu amor!";
+        let greeting = "Boa noite meu amor!";
 
-            if (timeInDecimal > 5.0 && timeInDecimal <= 12.0) {
-                greeting = "Bom dia meu amor!";
-            } else if (timeInDecimal > 12.0 && timeInDecimal <= 19.0) {
-                greeting = "Boa tarde meu amor!";
-            }
-            document.getElementById("greeting").innerText = greeting;
+        if (timeInDecimal > 5.0 && timeInDecimal <= 12.0) {
+            greeting = "Bom dia meu amor!";
+        } else if (timeInDecimal > 12.0 && timeInDecimal <= 19.0) {
+            greeting = "Boa tarde meu amor!";
+        }
+        document.getElementById("greeting").innerText = greeting;
+    }
+
+    // 2. MENSAGENS BANCO DE DADOS
+    const messages = [
+        "O meu dia só fica completo quando vejo você. Principalmente se for pelada.",
+
+        "De repente todas as músicas de amor viraram sobre a gente. Quero que sempre que escutar Calcinha Preta eu me lembre da gente cantando no seu quarto.",
+
+        "Ei! Eu te amo Manu, nunca duvide.",
+
+        "Queria poder parar o tempo pra poder aproveitar mais com você. Um dia não precisaremos ficar longe quando for hora de dormir, espero que chegue logo.",
+
+        "Você é o meu primeiro pensamento ao acordar e o último antes de dormir.",
+
+        "Te amar é a coisa que eu faço melhor na minha vida, eu faço tudo por você.",
+
+        "A minha vida ficou mais gostosa desde que você passou a fazer parte dela.",
+
+        // Link formatado em HTML e com estilo combinando com o app
+        "Pão de mel ponto mp3: <br><br><a href='https://music.youtube.com/watch?v=QiEvdfNoQK0&si=NO--cObmkB4jky4N' target='_blank' style='color: var(--text-secondary); text-decoration: underline; font-weight: 500;'>Clique aqui para ouvir ❤️</a>",
+
+        "Eu amo você mais que paçoca, penso em você o dia todo todos os dias."
+    ];
+
+    function updateDailyMessage() {
+        const now = new Date();
+        const diaAtual = now.getDate();
+        const mesAtual = now.getMonth(); 
+
+        // CÓDIGO DA SURPRESA: 12 de Junho (mês 5 no JS)
+        if (diaAtual === 12 && mesAtual === 5) {
+            document.getElementById("daily-message").innerText = "Nosso primeiro dia dos namorados juntos, acho que você deve imaginar o quanto eu pensava nisso durante todo aquele tempo que estávamos nos conhecendo. Eu não acreditaria se me contassem que um dia estaria vivendo isso tudo com você, e não poderia ser melhor, com você tudo parece perfeito. Manuela, meu corpo te deseja, meu coração pulsa por você e minha alma sente falta da sua quando ficamos longe. Eu te amo, e amo dividir a vida com você, hoje amanhã e sempre.";
+            return; 
         }
 
-        // 2. MENSAGENS BANCO DE DADOS
-        const messages = [
-            "Não importa como comece o meu dia, ele sempre fica perfeito quando lembro de você.",
-            "Você é a cor que faltava nos meus dias e a paz que minha alma precisava.",
-            "Cada detalhe seu é um motivo a mais para eu me apaixonar diariamente.",
-            "Se eu pudesse parar o tempo, seria no momento em que estou com você.",
-            "Você é o meu primeiro pensamento ao acordar e o Converterúlimo antes de dormir.",
-            "Amar você é a coisa mais fácil e natural que eu já fiz na vida.",
-            "O mundo é muito mais bonito desde que você passou a fazer parte do meu.",
-            "Meu lugar favorito no mundo é dentro do teu abraço.",
-            "Você não é apenas o meu amor, é a minha melhor amiga e minha calmaria."
-        ];
+        const start = new Date(now.getFullYear(), 0, 0);
+        const diff = now - start;
+        const oneDay = 1000 * 60 * 60 * 24;
+        const dayOfYear = Math.floor(diff / oneDay);
+        const messageIndex = dayOfYear % messages.length;
+        
+        // Mudado para innerHTML para o link funcionar!
+        document.getElementById("daily-message").innerHTML = messages[messageIndex];
+    }
 
-        function updateDailyMessage() {
-            const now = new Date();
-            const diaAtual = now.getDate();
-            const mesAtual = now.getMonth(); 
+    // 3. MOTOR INTELIGENTE DO CONTADOR DE DIAS (Anos, Meses e Dias)
+    function calculateDaysTogether() {
+        const startDate = new Date("2026-04-25T00:00:00");
+        const today = new Date();
+        
+        startDate.setHours(0,0,0,0);
+        today.setHours(0,0,0,0);
+        
+        let years = today.getFullYear() - startDate.getFullYear();
+        let months = today.getMonth() - startDate.getMonth();
+        let days = today.getDate() - startDate.getDate();
 
-            // CÓDIGO DA SURPRESA: 12 de Junho (mês 5 no JS)
-            if (diaAtual === 12 && mesAtual === 5) {
-                document.getElementById("daily-message").innerText = "Nosso primeiro dia dos namorados juntos, acho que você deve imaginar o quanto eu pensava nisso durante todo aquele tempo que estávamos nos conhecendo. Eu não acreditaria se me contassem que um dia estaria vivendo isso tudo com você, e não poderia ser melhor, com você tudo parece perfeito. Manuela, meu corpo te deseja, meu coração pulsa por você e minha alma sente falta da sua quando ficamos longe. Eu te amo, e amo dividir a vida com você, hoje amanhã e sempre.";
-                return; 
-            }
-
-            const start = new Date(now.getFullYear(), 0, 0);
-            const diff = now - start;
-            const oneDay = 1000 * 60 * 60 * 24;
-            const dayOfYear = Math.floor(diff / oneDay);
-            const messageIndex = dayOfYear % messages.length;
-            document.getElementById("daily-message").innerText = messages[messageIndex];
+        if (days < 0) {
+            months--;
+            const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+            days += prevMonth.getDate();
         }
 
-        // 3. MOTOR INTELIGENTE DO CONTADOR DE DIAS (Anos, Meses e Dias)
-        function calculateDaysTogether() {
-            const startDate = new Date("2026-04-25T00:00:00");
-            const today = new Date();
-            
-            startDate.setHours(0,0,0,0);
-            today.setHours(0,0,0,0);
-            
-            let years = today.getFullYear() - startDate.getFullYear();
-            let months = today.getMonth() - startDate.getMonth();
-            let days = today.getDate() - startDate.getDate();
+        if (months < 0) {
+            years--;
+            months += 12;
+        }
 
-            // Ajuste dos dias negativos pegando emprestado do mês anterior
-            if (days < 0) {
-                months--;
-                const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
-                days += prevMonth.getDate();
-            }
+        let parts = [];
+        
+        if (years > 0) {
+            parts.push(years === 1 ? "1 Ano" : `${years} Anos`);
+        }
+        if (months > 0) {
+            parts.push(months === 1 ? "1 mês" : `${months} meses`);
+        }
+        if (days > 0) {
+            parts.push(days === 1 ? "1 dia" : `${days} dias`);
+        }
 
-            // Ajuste dos meses negativos pegando emprestado do ano anterior
-            if (months < 0) {
-                years--;
-                months += 12;
+        let resultText = "";
+        if (parts.length === 1) {
+            resultText = parts[0];
+            if (years === 1 && months === 0 && days === 0) {
+                resultText += ".";
             }
+        } else if (parts.length === 2) {
+            resultText = parts[0] + " e " + parts[1];
+        } else if (parts.length === 3) {
+            resultText = parts[0] + ", " + parts[1] + " e " + parts[2];
+        } else {
+            resultText = "0 dias";
+        }
+        
+        document.getElementById("days-count").innerText = resultText;
+    }
 
-            // Construção das partes do texto respeitando singular, plural e ocultando zeros
-            let parts = [];
-            
-            if (years > 0) {
-                parts.push(years === 1 ? "1 Ano" : `${years} Anos`);
-            }
-            if (months > 0) {
-                parts.push(months === 1 ? "1 mês" : `${months} meses`);
-            }
-            if (days > 0) {
-                parts.push(days === 1 ? "1 dia" : `${days} dias`);
-            }
+    // 4. INTERAÇÕES E TRANSIÇÕES DE INTERFACE
+    const slider = document.getElementById("unlock-slider");
+    const messageScreen = document.getElementById("message-screen");
+    const counterScreen = document.getElementById("counter-screen");
 
-            // Montagem da frase final com pontuação elegante e espaçamento natural
-            let resultText = "";
-            if (parts.length === 1) {
-                resultText = parts[0];
-                // Adiciona um ponto final caso seja o aniversário exato de 1 ano puro
-                if (years === 1 && months === 0 && days === 0) {
-                    resultText += ".";
+    slider.addEventListener("input", function() {
+        const val = this.value;
+        const maxOpacity = 0.25; 
+        const dynamicOpacity = ((100 - val) / 100) * maxOpacity;
+        document.documentElement.style.setProperty('--track-opacity', dynamicOpacity);
+
+        if (val > 95) {
+            unlockScreen();
+        }
+    });
+
+    function resetSlider() {
+        if (slider.value <= 95) {
+            let val = parseInt(slider.value);
+            const interval = setInterval(() => {
+                if (val > 0) {
+                    val -= 12;
+                    if (val < 0) val = 0;
+                    slider.value = val;
+                    const dynamicOpacity = ((100 - val) / 100) * 0.25;
+                    document.documentElement.style.setProperty('--track-opacity', dynamicOpacity);
+                } else {
+                    clearInterval(interval);
                 }
-            } else if (parts.length === 2) {
-                resultText = parts[0] + " e " + parts[1];
-            } else if (parts.length === 3) {
-                // Formatação exata solicitada: "1 Ano 1 mês e 5 dias" (sem vírgula rígida)
-                resultText = parts[0] + ", " + parts[1] + " e " + parts[2];
-            } else {
-                resultText = "0 dias";
-            }
-            
-            document.getElementById("days-count").innerText = resultText;
+            }, 10);
         }
+    }
 
-        // 4. INTERAÇÕES E TRANSIÇÕES DE INTERFACE
-        const slider = document.getElementById("unlock-slider");
-        const messageScreen = document.getElementById("message-screen");
-        const counterScreen = document.getElementById("counter-screen");
+    slider.addEventListener("change", resetSlider);
+    slider.addEventListener("touchend", resetSlider);
 
-        slider.addEventListener("input", function() {
-            const val = this.value;
-            const maxOpacity = 0.25; 
-            const dynamicOpacity = ((100 - val) / 100) * maxOpacity;
-            document.documentElement.style.setProperty('--track-opacity', dynamicOpacity);
+    function unlockScreen() {
+        messageScreen.classList.add("unlocked");
+        slider.value = 100;
+        document.documentElement.style.setProperty('--track-opacity', 0);
+        if (navigator.vibrate) navigator.vibrate(20);
+    }
 
-            if (val > 95) {
-                unlockScreen();
-            }
+    function goToCounterScreen() {
+        messageScreen.classList.remove("unlocked");
+        setTimeout(() => {
+            calculateDaysTogether();
+            counterScreen.classList.add("active");
+        }, 500);
+    }
+
+    function resetToLock() {
+        counterScreen.classList.remove("active");
+        setTimeout(() => {
+            slider.value = 0;
+            document.documentElement.style.setProperty('--track-opacity', 0.25);
+        }, 600);
+    }
+
+    // SERVICE WORKER
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .then(reg => console.log('SW registrado', reg))
+                .catch(err => console.log('Erro no SW', err));
         });
+    }
 
-        function resetSlider() {
-            if (slider.value <= 95) {
-                let val = parseInt(slider.value);
-                const interval = setInterval(() => {
-                    if (val > 0) {
-                        val -= 12;
-                        if (val < 0) val = 0;
-                        slider.value = val;
-                        const dynamicOpacity = ((100 - val) / 100) * 0.25;
-                        document.documentElement.style.setProperty('--track-opacity', dynamicOpacity);
-                    } else {
-                        clearInterval(interval);
-                    }
-                }, 10);
-            }
-        }
-
-        slider.addEventListener("change", resetSlider);
-        slider.addEventListener("touchend", resetSlider);
-
-        function unlockScreen() {
-            messageScreen.classList.add("unlocked");
-            slider.value = 100;
-            document.documentElement.style.setProperty('--track-opacity', 0);
-            if (navigator.vibrate) navigator.vibrate(20);
-        }
-
-        function goToCounterScreen() {
-            messageScreen.classList.remove("unlocked");
-            setTimeout(() => {
-                calculateDaysTogether();
-                counterScreen.classList.add("active");
-            }, 500);
-        }
-
-        function resetToLock() {
-            counterScreen.classList.remove("active");
-            setTimeout(() => {
-                slider.value = 0;
-                document.documentElement.style.setProperty('--track-opacity', 0.25);
-            }, 600);
-        }
-
-        // SERVICE WORKER
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('SW registrado', reg))
-                    .catch(err => console.log('Erro no SW', err));
-            });
-        }
-
-        updateGreeting();
-        updateDailyMessage();
-        calculateDaysTogether();
-        setInterval(updateGreeting, 60000);
-    </script>
+    updateGreeting();
+    updateDailyMessage();
+    calculateDaysTogether();
+    setInterval(updateGreeting, 60000);
+</script>
 </body>
 </html>
