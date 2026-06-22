@@ -430,47 +430,63 @@
         document.getElementById("greeting").innerText = greeting;
     }
 
-    // 2. MENSAGENS BANCO DE DADOS
+    // 2. MENSAGENS BANCO DE DADOS — uma por dia do mês (índice 0 = dia 1, índice 30 = dia 31)
+    // Dias que não tiverem frase definida vão mostrar a mensagem padrão do final da lista.
+    // Edite as frases aqui. O dia 12 de junho ainda tem tratamento especial de data comemorativa.
     const messages = [
-        "O meu dia só fica completo quando vejo você. Principalmente se for pelada.",
-
-        "De repente todas as músicas de amor viraram sobre a gente. Quero que sempre que escutar Calcinha Preta eu me lembre da gente cantando no seu quarto.",
-
-        "Ei! Eu te amo Manu, nunca duvide.",
-
-        "Queria poder parar o tempo pra poder aproveitar mais com você. Um dia não precisaremos ficar longe quando for hora de dormir, espero que chegue logo.",
-
-        "Você é o meu primeiro pensamento ao acordar e o último antes de dormir.",
-
-        "Você é uma das pessoas mais fortes que eu conheço Manu, continue sendo assim, mesmo que seja difícil. Você merece o mundo",
-
-        "A minha vida ficou mais gostosa desde que você passou a fazer parte dela.",
-
-        // Link formatado em HTML e com estilo combinando com o app
-        "Pão de mel ponto mp3: <br><br><a href='https://music.youtube.com/watch?v=QiEvdfNoQK0&si=NO--cObmkB4jky4N' target='_blank' style='color: var(--text-secondary); text-decoration: underline; font-weight: 500;'>Clique aqui para ouvir ❤️</a>",
-
-        "Eu amo você mais que paçoca, penso em você o dia todo todos os dias."
+        /* Dia  1 */ "Coloca aqui a frase do dia 1.",
+        /* Dia  2 */ "Coloca aqui a frase do dia 2.",
+        /* Dia  3 */ "Coloca aqui a frase do dia 3.",
+        /* Dia  4 */ "Coloca aqui a frase do dia 4.",
+        /* Dia  5 */ "Coloca aqui a frase do dia 5.",
+        /* Dia  6 */ "Coloca aqui a frase do dia 6.",
+        /* Dia  7 */ "Coloca aqui a frase do dia 7.",
+        /* Dia  8 */ "Coloca aqui a frase do dia 8.",
+        /* Dia  9 */ "Coloca aqui a frase do dia 9.",
+        /* Dia 10 */ "Coloca aqui a frase do dia 10.",
+        /* Dia 11 */ "Coloca aqui a frase do dia 11.",
+        /* Dia 12 */ "Coloca aqui a frase do dia 12.",
+        /* Dia 13 */ "Coloca aqui a frase do dia 13.",
+        /* Dia 14 */ "Coloca aqui a frase do dia 14.",
+        /* Dia 15 */ "Coloca aqui a frase do dia 15.",
+        /* Dia 16 */ "Coloca aqui a frase do dia 16.",
+        /* Dia 17 */ "Coloca aqui a frase do dia 17.",
+        /* Dia 18 */ "Coloca aqui a frase do dia 18.",
+        /* Dia 19 */ "Coloca aqui a frase do dia 19.",
+        /* Dia 20 */ "Coloca aqui a frase do dia 20.",
+        /* Dia 21 */ "Coloca aqui a frase do dia 21.",
+        /* Dia 22 */ "Oi bebê, você é o motivo que me faz levantar da cama todos os dias, pra sempre tentar ser uma pessoa melhor, estudar pra podermos viver confortável no futuro. O meu sonho ainda é viver junto com você.",
+        /* Dia 23 */ "Coloca aqui a frase do dia 23.",
+        /* Dia 24 */ "Coloca aqui a frase do dia 24.",
+        /* Dia 25 */ "Coloca aqui a frase do dia 25.",
+        /* Dia 26 */ "Coloca aqui a frase do dia 26.",
+        /* Dia 27 */ "Coloca aqui a frase do dia 27.",
+        /* Dia 28 */ "Coloca aqui a frase do dia 28.",
+        /* Dia 29 */ "Coloca aqui a frase do dia 29.",
+        /* Dia 30 */ "Coloca aqui a frase do dia 30.",
+        /* Dia 31 */ "Coloca aqui a frase do dia 31.",
     ];
 
     function updateDailyMessage() {
         const now = new Date();
-        const diaAtual = now.getDate();
-        const mesAtual = now.getMonth(); 
+        const diaAtual = now.getDate();   // 1–31
+        const mesAtual = now.getMonth();  // 0–11
 
-        // CÓDIGO DA SURPRESA: 12 de Junho (mês 5 no JS)
+        // DATA ESPECIAL: 12 de junho (Dia dos Namorados)
         if (diaAtual === 12 && mesAtual === 5) {
             document.getElementById("daily-message").innerText = "Nosso primeiro dia dos namorados juntos, acho que você deve imaginar o quanto eu pensava nisso durante todo aquele tempo que estávamos nos conhecendo. Eu não acreditaria se me contassem que um dia estaria vivendo isso tudo com você, e não poderia ser melhor, com você tudo parece perfeito. Manuela, meu corpo te deseja, meu coração pulsa por você e minha alma sente falta da sua quando ficamos longe. Eu te amo, e amo dividir a vida com você, hoje amanhã e sempre.";
-            return; 
+            return;
         }
 
-        const start = new Date(now.getFullYear(), 0, 0);
-        const diff = now - start;
-        const oneDay = 1000 * 60 * 60 * 24;
-        const dayOfYear = Math.floor(diff / oneDay);
-        const messageIndex = dayOfYear % messages.length;
-        
-        // Mudado para innerHTML para o link funcionar!
-        document.getElementById("daily-message").innerHTML = messages[messageIndex];
+        // Usa o dia do mês como índice (dia 1 → posição 0, dia 31 → posição 30)
+        const index = diaAtual - 1;
+
+        // Se o array tiver frase para esse dia, usa ela; caso contrário usa o fallback
+        const mensagem = messages[index] !== undefined
+            ? messages[index]
+            : "Eu te amo, Manu. ❤️";
+
+        document.getElementById("daily-message").innerHTML = mensagem;
     }
 
     // 3. MOTOR INTELIGENTE DO CONTADOR DE DIAS (Anos, Meses e Dias)
