@@ -711,8 +711,7 @@
     }
 
     // 2. MENSAGENS — uma por dia do mês
-    // Dias 1-21 ainda sem frase: deixei como string vazia ("") para cair no fallback
-    // Dias 22-31 com frases reais
+    // Dias sem frase ainda: deixei como string vazia ("") para cair no fallback
     const messages = [
         /* Dia  1 */ "Não me canso de você nunca Manu, vai ter que me aguentar até ficarmos velhinhos.",
         /* Dia  2 */ "Oi nenenzinha, passar essas férias ao seu lado foi a melhor coisa que poderia ter me acontecido.",
@@ -832,14 +831,11 @@
     // Só precisa colocar os dias que você quiser guardar — não precisa dos 31.
     // O mês ATUAL nunca precisa entrar aqui: ele é montado sozinho a partir
     // do array `messages` lá em cima, então continua 100% automático.
-    // Exemplo (apague o comentário e edite com suas frases reais):
-    // "2026-04": {
-    //     25: "Foi hoje que começamos a namorar, o dia mais feliz da minha vida.",
-    //     30: "Uma semana juntos e já não consigo imaginar a vida sem você."
-    // },
+    // IMPORTANTE: toda linha do meio da lista precisa terminar com vírgula —
+    // só a última linha de cada mês pode ficar sem.
     const pastMonthsArchive = {
         "2026-06": {
-            12: "Nosso primeiro dia dos namorados juntos, acho que você deve imaginar o quanto eu pensava nisso durante todo aquele tempo que estávamos nos conhecendo. Eu não acreditaria se me contassem que um dia estaria vivendo isso tudo com você, e não poderia ser melhor, com você tudo parece perfeito. Manuela, meu corpo te deseja, meu coração pulsa por você e minha alma sente falta da sua quando ficamos longe. Eu te amo, e amo dividir a vida com você, hoje amanhã e sempre."
+            12: "Nosso primeiro dia dos namorados juntos, acho que você deve imaginar o quanto eu pensava nisso durante todo aquele tempo que estávamos nos conhecendo. Eu não acreditaria se me contassem que um dia estaria vivendo isso tudo com você, e não poderia ser melhor, com você tudo parece perfeito. Manuela, meu corpo te deseja, meu coração pulsa por você e minha alma sente falta da sua quando ficamos longe. Eu te amo, e amo dividir a vida com você, hoje amanhã e sempre.",
             22: "Oi bebê, você é o motivo que me faz levantar da cama todos os dias, pra sempre tentar ser uma pessoa melhor, estudar pra podermos viver confortável no futuro. O meu sonho ainda é viver junto com você.",
             23: "Oiii Manu! Você é a pessoa mais importante da minha vida, por você eu bebo o mar de canudinho.",
             24: "Manuuu! Eu te amo minha gatinha, sabe aquela vontade de viver o resto da vida com o seu amor? Tenho toda hora.",
@@ -851,18 +847,18 @@
             30: "Oii Manuzinha, quero que nossos filhos venham perfeitos igual a você.",
         },
         "2026-07": {
-            01: "Quero ficar olhando pro seu rosto o dia todo, e quando for dormir eu quero ver no sonho também.",
-            02: "Bright are the stars that shine, dark is the sky, i know this love of mine will never die, and i love her.",
-            03: "Bebezinha, você é só minha. Obrigado por sempre estar comigo quando eu preciso, pode ter certeza que eu faço o mesmo por você.",
-            04: "Oi Manuzinha, rosas são vermelhas, violetas são azuis, esse seu rostinho é o que me seduz :P",
-            05: "Ei Manuzoca, sabe o que é melhor do que uma beijoca Duas beijocas.",
-            06: "Manulinda, você é Lagoona do meu Gil rs.",
-            07: "Oi amoreco, um beijão no seu coração, e outro mais embaixo, bem mais embaixo.",
-            08: "Desculpa eu estar tão chato ultimamente, eu vou melhor, so tenha um pouco de paciência minha princesa, vai dar tudo certo. Eu amo você minha sapequinha.",
-            09:"Passei mais de 12 horas dormindo, tenho certeza que sonhei com você ao meu lado esse tempo todo Manulinda, sinto falta dos seus olhinhos apaixonados, da sua risada, do seu calor, do seu beijo...",
+            1: "Quero ficar olhando pro seu rosto o dia todo, e quando for dormir eu quero ver no sonho também.",
+            2: "Bright are the stars that shine, dark is the sky, i know this love of mine will never die, and i love her.",
+            3: "Bebezinha, você é só minha. Obrigado por sempre estar comigo quando eu preciso, pode ter certeza que eu faço o mesmo por você.",
+            4: "Oi Manuzinha, rosas são vermelhas, violetas são azuis, esse seu rostinho é o que me seduz :P",
+            5: "Ei Manuzoca, sabe o que é melhor do que uma beijoca Duas beijocas.",
+            6: "Manulinda, você é Lagoona do meu Gil rs.",
+            7: "Oi amoreco, um beijão no seu coração, e outro mais embaixo, bem mais embaixo.",
+            8: "Desculpa eu estar tão chato ultimamente, eu vou melhor, so tenha um pouco de paciência minha princesa, vai dar tudo certo. Eu amo você minha sapequinha.",
+            9: "Passei mais de 12 horas dormindo, tenho certeza que sonhei com você ao meu lado esse tempo todo Manulinda, sinto falta dos seus olhinhos apaixonados, da sua risada, do seu calor, do seu beijo...",
             10: "Oiii Manuzinha, você é só minha. Nosso amor não tem tamanho, é impossível de medir, vamos ficar juntos pra sempre.",
             11: "Manuzinhaaa! Vou amar passar minhas férias com você, quanto mais tempo junto melhor!",
-            12:"O melhor lugar do mundo é dentro do seu abraço Manu!",
+            12: "O melhor lugar do mundo é dentro do seu abraço Manu!",
             13: "Primeiro dia das férias meu amor, eu não poderia estar mais feliz, vamos poder ficar juntos o dia inteiro.",
             14: "Quem diria que a Manuzinha faria eu até jogar free fire denovo. Eu te amo minha gatinha, minha dona :P",
             15: "Que grande passo pra gente né amoreco? Eu to amando viver isso com você!",
