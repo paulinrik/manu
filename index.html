@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    
+
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Para Meu Amor">
     <link rel="apple-touch-icon" href="icone.png">
 
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#1f070b">
+    <meta name="theme-color" content="#170609">
     <link rel="manifest" href="manifest.json">
 
     <title>Para Meu Amor</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,600&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -30,18 +30,29 @@
         }
 
         :root {
-            --bg-gradient: linear-gradient(135deg, #4a1a24 0%, #1f070b 100%);
-            --text-primary: #fff0f3;
-            --text-secondary: #ff99ae;
-            --accent-color: #e63e65;
+            /* Rosa & coral — paleta (baseada em #FF6863) */
+            --bg-top: #481019;
+            --bg-bottom: #170609;
+            --rose: #FF6863;
+            --rose-soft: #FFADA6;
+            --rose-dim: rgba(255, 104, 99, 0.35);
+            --ivory: #FFF3EF;
+            --blush: #FFB9B2;
+            --ink: #3a0908;
+
+            --bg-gradient:
+                radial-gradient(circle at 18% 12%, rgba(255, 104, 99, 0.16), transparent 42%),
+                radial-gradient(circle at 88% 82%, rgba(255, 154, 140, 0.35), transparent 48%),
+                linear-gradient(160deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+
             --track-opacity: 0.25;
         }
 
         body {
             font-family: 'Poppins', sans-serif;
             background: var(--bg-gradient);
-            background-color: #1f070b;
-            color: var(--text-primary);
+            background-color: var(--bg-bottom);
+            color: var(--ivory);
             overflow: hidden;
             height: 100vh;
             width: 100vw;
@@ -50,9 +61,52 @@
 
         h1, h2, h3 {
             font-family: 'Playfair Display', serif;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
         }
 
+        /* Divisor ornamental — motivo repetido em todas as telas */
+        .ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 68%;
+            max-width: 210px;
+            margin: 14px auto 22px;
+        }
+        .ornament::before, .ornament::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--rose), transparent);
+        }
+        .ornament-dot {
+            width: 6px;
+            height: 6px;
+            flex-shrink: 0;
+            background: var(--rose);
+            transform: rotate(45deg);
+            box-shadow: 0 0 8px rgba(255, 104, 99, 0.65);
+        }
+
+        /* Brilho ambiente — camada única acima de tudo, sutil e não-interativa */
+        .ambient-glow {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            background:
+                radial-gradient(circle at 28% 18%, rgba(255, 104, 99, 0.10), transparent 55%),
+                radial-gradient(circle at 78% 86%, rgba(230, 199, 138, 0.07), transparent 50%);
+            animation: ambientPulse 9s ease-in-out infinite alternate;
+        }
+        @keyframes ambientPulse {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* ===================== TELA 1 — BLOQUEIO ===================== */
         #lock-screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -64,20 +118,22 @@
             background: var(--bg-gradient);
             z-index: 1;
             text-align: center;
-            gap: 6vh;
+            gap: 5vh;
         }
 
         #greeting {
-            font-size: 2.6rem;
-            color: var(--text-primary);
-            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+            font-size: 2.5rem;
+            font-style: italic;
+            font-weight: 600;
+            color: var(--ivory);
+            text-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
             line-height: 1.3;
             max-width: 90%;
             animation: pulseGlow 4s infinite alternate ease-in-out;
         }
 
         @keyframes pulseGlow {
-            0% { transform: scale(1); opacity: 0.9; }
+            0% { transform: scale(1); opacity: 0.92; }
             100% { transform: scale(1.02); opacity: 1; }
         }
 
@@ -89,8 +145,8 @@
         }
 
         .slider-text {
-            font-size: 1rem;
-            color: var(--text-secondary);
+            font-size: 0.95rem;
+            color: var(--blush);
             margin-bottom: 18px;
             font-style: italic;
             font-weight: 300;
@@ -107,27 +163,30 @@
         input[type=range] {
             -webkit-appearance: none;
             width: 100%;
-            height: 54px;
-            background: rgba(255, 153, 174, var(--track-opacity));
+            height: 56px;
+            background: linear-gradient(90deg, rgba(255, 104, 99, var(--track-opacity)), rgba(255, 154, 140, var(--track-opacity)));
             border-radius: 30px;
             outline: none;
             transition: background 0.05s linear;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: inset 0 0 0 1px rgba(255, 104, 99, 0.25), 0 4px 20px rgba(0, 0, 0, 0.5);
             cursor: pointer;
         }
 
         input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 54px;
-            height: 54px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
-            background: var(--accent-color);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-            transition: transform 0.1s;
-            background-image: url('data:image/svg+xml;utf8,<svg fill="%23fff0f3" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>');
+            background-color: var(--rose);
+            background-image:
+                radial-gradient(circle at 34% 30%, var(--rose-soft), var(--rose) 60%, #cc3f3a 100%),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="%233a0908"><path d="M12 21s-7.5-4.6-10-9.3C.6 8 2.4 4.5 6 4.5c2 0 3.6 1.1 4.5 2.6C11.4 5.6 13 4.5 15 4.5c3.6 0 5.4 3.5 4 7.2C19.5 16.4 12 21 12 21z"/></svg>');
             background-repeat: no-repeat;
-            background-position: center;
+            background-position: center, center;
+            background-size: cover, 23px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55), 0 0 0 3px rgba(247, 236, 217, 0.08);
+            transition: transform 0.1s;
         }
 
         .kitty-container {
@@ -135,9 +194,22 @@
             bottom: 25px;
             width: 85px;
             height: auto;
-            opacity: 0.6;
+            opacity: 0.72;
             pointer-events: none;
             z-index: 5;
+        }
+
+        .kitty-container::before {
+            content: '';
+            position: absolute;
+            bottom: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 72px;
+            height: 72px;
+            background: radial-gradient(circle, rgba(255, 104, 99, 0.32), transparent 70%);
+            filter: blur(5px);
+            z-index: -1;
         }
 
         .kitty-container img {
@@ -147,16 +219,16 @@
         }
 
         .kitty-right img {
-            transform: scaleX(-1); 
+            transform: scaleX(-1);
         }
 
-        .kitty-left { 
-            left: 20px; 
+        .kitty-left {
+            left: 20px;
             transform-origin: bottom center;
             animation: smoothTiltLeft 5s infinite alternate ease-in-out;
         }
-        .kitty-right { 
-            right: 20px; 
+        .kitty-right {
+            right: 20px;
             transform-origin: bottom center;
             animation: smoothTiltRight 5s infinite alternate ease-in-out;
         }
@@ -171,12 +243,13 @@
             100% { transform: rotate(-22deg); }
         }
 
+        /* ===================== TELA 2 — MENSAGEM ===================== */
         #message-screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-gradient);
-            background-color: #1f070b;
-            color: var(--text-primary);
+            background-color: var(--bg-bottom);
+            color: var(--ivory);
             z-index: 20;
             display: flex;
             flex-direction: column;
@@ -184,7 +257,7 @@
             align-items: center;
             padding: 35px;
             text-align: center;
-            
+
             transform: translateY(100%);
             transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             border-top-left-radius: 35px;
@@ -210,25 +283,59 @@
         }
 
         .message-content h2 {
-            font-size: 2.1rem;
-            margin-bottom: 25px;
-            color: var(--text-secondary);
+            font-size: 2rem;
             font-style: italic;
+            color: var(--rose-soft);
         }
 
         .message-content p {
-            font-size: 1.15rem;
-            line-height: 1.7;
-            color: var(--text-primary);
-            font-weight: 300;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.4rem;
+            line-height: 1.65;
+            color: var(--ivory);
+            font-weight: 500;
         }
 
+        /* ===================== BOTÕES ===================== */
+        .close-btn {
+            margin-top: 26px;
+            padding: 12px 32px;
+            background: rgba(255, 104, 99, 0.08);
+            border: 1.5px solid var(--rose);
+            color: var(--ivory);
+            border-radius: 25px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.92rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .close-btn:active {
+            background: var(--rose);
+            color: var(--ink);
+            transform: scale(0.96);
+        }
+
+        .close-btn.accent-btn {
+            background: linear-gradient(135deg, var(--rose-soft), var(--rose) 70%);
+            color: var(--ink);
+            font-weight: 600;
+        }
+        .close-btn.accent-btn:active {
+            filter: brightness(0.92);
+            transform: scale(0.96);
+        }
+
+        /* ===================== TELA 3 — CONTADOR ===================== */
         #counter-screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-gradient);
-            background-color: #1f070b;
-            color: var(--text-primary);
+            background-color: var(--bg-bottom);
+            color: var(--ivory);
             z-index: 30;
             display: flex;
             flex-direction: column;
@@ -236,7 +343,7 @@
             align-items: center;
             padding: 35px;
             text-align: center;
-            
+
             transform: translateY(100%);
             transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -250,7 +357,7 @@
             top: 0; left: 0; width: 100%; height: 100%;
             overflow: hidden;
             z-index: 31;
-            opacity: 0.18; 
+            opacity: 0.16;
             pointer-events: none;
         }
 
@@ -265,6 +372,7 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
             display: block;
             transform-origin: center center;
+            filter: sepia(0.25) saturate(1.1) hue-rotate(-6deg) brightness(0.92);
         }
 
         .photo-collage-bg .collage-card:nth-child(odd) img {
@@ -298,58 +406,220 @@
         }
 
         .counter-title {
-            font-size: 2.2rem;
-            color: var(--text-secondary);
-            margin-bottom: 30px;
+            font-size: 2.1rem;
             font-style: italic;
+            color: var(--rose-soft);
         }
 
         .counter-box {
-            background: rgba(230, 62, 101, 0.08);
-            border: 1px solid rgba(255, 153, 174, 0.2);
-            padding: 35px 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            margin-bottom: 35px;
+            position: relative;
+            background: rgba(72, 16, 25, 0.32);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border: 1px solid var(--rose-dim);
+            padding: 36px 26px;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+            margin-bottom: 30px;
             width: 100%;
         }
 
+        /* cantos dourados — moldura de "medalhão" */
+        .counter-box::before, .counter-box::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 1.5px solid var(--rose);
+            opacity: 0.8;
+        }
+        .counter-box::before {
+            top: 8px; left: 8px;
+            border-right: none; border-bottom: none;
+        }
+        .counter-box::after {
+            bottom: 8px; right: 8px;
+            border-left: none; border-top: none;
+        }
+
         .counter-text {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             line-height: 1.8;
             font-weight: 400;
+            font-family: 'Poppins', sans-serif;
         }
 
         .days-highlight {
             font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            color: var(--text-primary);
-            display: block;
+            font-size: 2.35rem;
             font-weight: 600;
-            margin: 5px 0;
-            text-shadow: 0 2px 10px rgba(230, 62, 101, 0.4);
+            display: block;
+            margin: 6px 0 2px;
             line-height: 1.3;
+            background: linear-gradient(90deg, var(--rose-soft), var(--rose) 55%, var(--rose-soft));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: var(--rose-soft);
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 18px rgba(255, 104, 99, 0.25);
         }
 
-        .close-btn {
-            margin-top: 20px;
-            padding: 12px 32px;
-            background: rgba(230, 62, 101, 0.1);
-            border: 1.5px solid var(--accent-color);
-            color: var(--text-primary);
-            border-radius: 25px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            transition: all 0.2s ease;
+        .counter-actions {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
-        
-        .close-btn:active {
-            background: var(--accent-color);
-            color: var(--text-primary);
-            transform: scale(0.96);
+        .counter-actions .close-btn {
+            margin-top: 0;
+        }
+
+        /* ===================== TELA 4 — GALERIA ===================== */
+        #gallery-screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-gradient);
+            background-color: var(--bg-bottom);
+            color: var(--ivory);
+            z-index: 40;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 26px 22px;
+            text-align: center;
+
+            transform: translateY(100%);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #gallery-screen.active {
+            transform: translateY(0);
+        }
+
+        .gallery-header {
+            flex-shrink: 0;
+        }
+
+        .gallery-title {
+            font-size: 1.9rem;
+            font-style: italic;
+            color: var(--rose-soft);
+        }
+
+        .gallery-subtitle {
+            font-size: 0.85rem;
+            color: var(--blush);
+            font-weight: 300;
+            letter-spacing: 0.3px;
+            margin-top: -6px;
+        }
+
+        .gallery-month-select {
+            appearance: none;
+            -webkit-appearance: none;
+            background: rgba(255, 104, 99, 0.10);
+            border: 1.5px solid var(--rose-dim);
+            color: var(--rose-soft);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            padding: 10px 34px 10px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 8px 0 10px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="%23ffada6"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+        }
+        .gallery-month-select:focus {
+            outline: none;
+            border-color: var(--rose);
+        }
+        .gallery-month-select option {
+            background: var(--bg-bottom);
+            color: var(--ivory);
+        }
+
+        .gallery-empty {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--blush);
+            padding: 50px 10px;
+            text-align: center;
+        }
+
+        .gallery-list {
+            flex: 1;
+            width: 100%;
+            max-width: 380px;
+            overflow-y: auto;
+            margin: 6px 0 18px;
+            padding: 4px 6px;
+            text-align: left;
+        }
+
+        .gallery-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .gallery-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 104, 99, 0.4);
+            border-radius: 4px;
+        }
+
+        .gallery-entry {
+            display: flex;
+            gap: 14px;
+            padding: 16px 4px;
+            border-bottom: 1px solid rgba(255, 104, 99, 0.15);
+        }
+        .gallery-entry:last-child {
+            border-bottom: none;
+        }
+
+        .gallery-badge {
+            flex-shrink: 0;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255, 104, 99, 0.12);
+            border: 1px solid rgba(255, 104, 99, 0.55);
+            color: var(--rose-soft);
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-entry-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .gallery-date {
+            display: block;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--blush);
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .gallery-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.12rem;
+            line-height: 1.5;
+            color: var(--ivory);
+        }
+
+        #gallery-screen .close-btn {
+            margin-top: 0;
+            flex-shrink: 0;
         }
     </style>
 </head>
@@ -357,7 +627,7 @@
 
     <div id="lock-screen">
         <h1 id="greeting">Olá, meu amor!</h1>
-        
+
         <div class="slider-wrapper">
             <div class="slider-text">deslize para ler</div>
             <input type="range" id="unlock-slider" min="0" max="100" value="0">
@@ -366,7 +636,7 @@
         <div class="kitty-container kitty-left">
             <img src="hellokitty.png" alt="Hello Kitty e Daniel">
         </div>
-        
+
         <div class="kitty-container kitty-right">
             <img src="hellokitty.png" alt="Hello Kitty e Daniel">
         </div>
@@ -375,6 +645,7 @@
     <div id="message-screen">
         <div class="message-content">
             <h2>Mensagem de Hoje</h2>
+            <div class="ornament"><span class="ornament-dot"></span></div>
             <p id="daily-message">Carregando nosso momento...</p>
             <button class="close-btn" onclick="goToCounterScreen()">Voltar</button>
         </div>
@@ -390,17 +661,36 @@
 
         <div class="counter-container">
             <h2 class="counter-title">Nosso Amor</h2>
-            
+            <div class="ornament"><span class="ornament-dot"></span></div>
+
             <div class="counter-box">
                 <p class="counter-text">
-                    Namorando há 
-                    <span id="days-count" class="days-highlight">Calculando tempo...</span> 
+                    Namorando há
+                    <span id="days-count" class="days-highlight">Calculando tempo...</span>
                 </p>
             </div>
 
-            <button class="close-btn" onclick="resetToLock()">Início</button>
+            <div class="counter-actions">
+                <button class="close-btn accent-btn" onclick="goToGallery()">Galeria</button>
+                <button class="close-btn" onclick="resetToLock()">Início</button>
+            </div>
         </div>
     </div>
+
+    <div id="gallery-screen">
+        <div class="gallery-header">
+            <h2 class="gallery-title">Nossas Palavras</h2>
+            <div class="ornament"><span class="ornament-dot"></span></div>
+            <select class="gallery-month-select" id="gallery-month-select"></select>
+            <p class="gallery-subtitle" id="gallery-subtitle">Tudo que já te disse</p>
+        </div>
+
+        <div class="gallery-list" id="gallery-list"></div>
+
+        <button class="close-btn" onclick="closeGallery()">Voltar</button>
+    </div>
+
+    <div class="ambient-glow"></div>
 
 <script>
     // 1. SAUDAÇÃO TIMELINE
@@ -443,38 +733,44 @@
         /* Dia 17 */ "",
         /* Dia 18 */ "",
         /* Dia 19 */ "",
-        /* Dia 20 */ "Oiii meu nenê, eu te amo eternamente, um dia vamos ser casados, mas você vai ser pra sempre minha namorada.",
+        /* Dia 20 */ "",
         /* Dia 21 */ "",
-        /* Dia 22 */ "Oi bebê, você é o motivo que me faz levantar da cama todos os dias, pra sempre tentar ser uma pessoa melhor, estudar pra podermos viver confortável no futuro. O meu sonho ainda é viver junto com você.",
-        /* Dia 23 */ "Oi minha princesa, você é única, ficaremos juntos eternamente. Cada experiência com você é especial.",
-        /* Dia 24 */ "Eu te amo minha boneca, sem você não sou nada. Queria ser a pele do seu corpo, pra estar junto com você a tanto tempo.",
-        /* Dia 25 */ "Oi Manu I love u! Meus dias são mais felizes quando passo eles com você.",
-        /* Dia 26 */ "Pode ter certeza que onde você estiver, é onde eu quero estar.",
-        /* Dia 27 */ "Minha maior paixão é você Manu, cada segundo que passo ao seu lado é um sonho realizado. Ficar com você é a melhor coisa do mundo.",
-        /* Dia 28 */ "Oii bebezinha, obrigado por estar sempre comigo quando eu preciso, eu amo você e espero que eu possa sempre te ajudar como você faz comigo.",
-        /* Dia 29 */ "Oi minha gatinha linda, tenho um vício em você, me tremo todo so de pensar em ficar longe de ti Manu.",
-        /* Dia 30 */ "Bebezinha linda do Paulo, eu te amo de hoje até o infinito. 'When im not with you, think of you always'.",
-        /* Dia 31 */ "Eu quero passar minha vida toda ao seu lado Manu, cada segundo de cada minuto.",
+        /* Dia 22 */ "",
+        /* Dia 23 */ "",
+        /* Dia 24 */ "",
+        /* Dia 25 */ "",
+        /* Dia 26 */ "",
+        /* Dia 27 */ "",
+        /* Dia 28 */ "",
+        /* Dia 29 */ "",
+        /* Dia 30 */ "",
+        /* Dia 31 */ "",
     ];
+
+    // Mensagem especial de 12 de junho (Dia dos Namorados) — mesma fonte usada
+    // tanto na tela do dia quanto na Galeria, então qualquer alteração aqui
+    // aparece automaticamente nas duas telas.
+    const SPECIAL_DATES = {
+        "5-12": "Nosso primeiro dia dos namorados juntos, acho que você deve imaginar o quanto eu pensava nisso durante todo aquele tempo que estávamos nos conhecendo. Eu não acreditaria se me contassem que um dia estaria vivendo isso tudo com você, e não poderia ser melhor, com você tudo parece perfeito. Manuela, meu corpo te deseja, meu coração pulsa por você e minha alma sente falta da sua quando ficamos longe. Eu te amo, e amo dividir a vida com você, hoje amanhã e sempre."
+    };
+
+    // Fonte única da verdade: dado um dia (1-31) e mês (0-11), devolve a frase
+    // correspondente. Usada tanto pela tela diária quanto pela Galeria — por
+    // isso qualquer frase nova entra automaticamente na Galeria também.
+    function resolveMessageForDate(day, month) {
+        const key = `${month}-${day}`;
+        if (SPECIAL_DATES[key]) {
+            return SPECIAL_DATES[key];
+        }
+        const index = day - 1;
+        return (messages[index] !== undefined && messages[index] !== "")
+            ? messages[index]
+            : "Eu te amo, Manu. ❤️";
+    }
 
     function updateDailyMessage() {
         const now = new Date();
-        const diaAtual = now.getDate();   // 1–31
-        const mesAtual = now.getMonth();  // 0–11
-
-        // DATA ESPECIAL: 12 de junho (Dia dos Namorados)
-        if (diaAtual === 12 && mesAtual === 5) {
-            document.getElementById("daily-message").innerHTML = "Nosso primeiro dia dos namorados juntos, acho que você deve imaginar o quanto eu pensava nisso durante todo aquele tempo que estávamos nos conhecendo. Eu não acreditaria se me contassem que um dia estaria vivendo isso tudo com você, e não poderia ser melhor, com você tudo parece perfeito. Manuela, meu corpo te deseja, meu coração pulsa por você e minha alma sente falta da sua quando ficamos longe. Eu te amo, e amo dividir a vida com você, hoje amanhã e sempre.";
-            return;
-        }
-
-        const index = diaAtual - 1;
-
-        // Verifica se existe mensagem para o dia E se ela não está vazia
-        const mensagem = (messages[index] !== undefined && messages[index] !== "")
-            ? messages[index]
-            : "Eu te amo, Manu. ❤️";
-
+        const mensagem = resolveMessageForDate(now.getDate(), now.getMonth());
         document.getElementById("daily-message").innerHTML = mensagem;
     }
 
@@ -482,10 +778,10 @@
     function calculateDaysTogether() {
         const startDate = new Date("2026-04-25T00:00:00");
         const today = new Date();
-        
+
         startDate.setHours(0,0,0,0);
         today.setHours(0,0,0,0);
-        
+
         let years = today.getFullYear() - startDate.getFullYear();
         let months = today.getMonth() - startDate.getMonth();
         let days = today.getDate() - startDate.getDate();
@@ -502,7 +798,7 @@
         }
 
         let parts = [];
-        
+
         if (years > 0) {
             parts.push(years === 1 ? "1 Ano" : `${years} Anos`);
         }
@@ -523,18 +819,151 @@
         } else {
             resultText = "0 dias";
         }
-        
+
         document.getElementById("days-count").innerText = resultText;
+    }
+
+    // 3b. GALERIA
+    const MONTH_NAMES = ["janeiro","fevereiro","março","abril","maio","junho",
+                          "julho","agosto","setembro","outubro","novembro","dezembro"];
+
+    // MESES PASSADOS — preencha aqui manualmente.
+    // Chave: "AAAA-MM" (mês com 2 dígitos). Valor: objeto { diaDoMês: "frase" }.
+    // Só precisa colocar os dias que você quiser guardar — não precisa dos 31.
+    // O mês ATUAL nunca precisa entrar aqui: ele é montado sozinho a partir
+    // do array `messages` lá em cima, então continua 100% automático.
+    // Exemplo (apague o comentário e edite com suas frases reais):
+    // "2026-04": {
+    //     25: "Foi hoje que começamos a namorar, o dia mais feliz da minha vida.",
+    //     30: "Uma semana juntos e já não consigo imaginar a vida sem você."
+    // },
+    const pastMonthsArchive = {
+        "2026-06": {
+
+            22: "Oi bebê, você é o motivo que me faz levantar da cama todos os dias, pra sempre tentar ser uma pessoa melhor, estudar pra podermos viver confortável no futuro. O meu sonho ainda é viver junto com você.",
+            23: "Oiii Manu! Você é a pessoa mais importante da minha vida, por você eu bebo o mar de canudinho.",
+            24: "Manuuu! Eu te amo minha gatinha, sabe aquela vontade de viver o resto da vida com o seu amor? Tenho toda hora.",
+            25: "Oi Manu I love u! Meus dias são mais felizes quando passo eles com você.",
+            26: "Pode ter certeza que onde você estiver, é onde eu quero estar.",
+            27: "Sinto muito por não ficar tanto tempo com você durante a semana meu amor. Um dia vamos poder ficar juntinhos todo dia o dia todo sem preocupações.",
+            28: "Minha paixão é você Manu, sou viciado em ti dos seus pés a cabeça, principalmente os pés.",
+            29: "EU TE AMO MANU! Gosto de você até do avesso, besaum!.",
+            30: "Oii Manuzinha, quero que nossos filhos venham perfeitos igual a você.",
+            31: "Quero ficar olhando pro seu rosto o dia todo, e quando for dormir eu quero ver no sonho também.",
+        },
+        "2026-07": {
+            01: "Quero ficar olhando pro seu rosto o dia todo, e quando for dormir eu quero ver no sonho também.",
+            02: "Bright are the stars that shine, dark is the sky, i know this love of mine will never die, and i love her.",
+            03: "Bebezinha, você é só minha. Obrigado por sempre estar comigo quando eu preciso, pode ter certeza que eu faço o mesmo por você.",
+            04: "Oi Manuzinha, rosas são vermelhas, violetas são azuis, esse seu rostinho é o que me seduz :P",
+            05: "Ei Manuzoca, sabe o que é melhor do que uma beijoca Duas beijocas.",
+            06: "Manulinda, você é Lagoona do meu Gil rs.",
+            07: "Oi amoreco, um beijão no seu coração, e outro mais embaixo, bem mais embaixo.",
+            20: "Oiii meu nenê, eu te amo eternamente, um dia vamos ser casados, mas você vai ser pra sempre minha namorada.",
+            22: "Oi bebê, você é o motivo que me faz levantar da cama todos os dias, pra sempre tentar ser uma pessoa melhor, estudar pra podermos viver confortável no futuro. O meu sonho ainda é viver junto com você.",
+            23: "Oi minha princesa, você é única, ficaremos juntos eternamente. Cada experiência com você é especial.",
+            24: "Eu te amo minha boneca, sem você não sou nada. Queria ser a pele do seu corpo, pra estar junto com você a tanto tempo.",
+            25: "Oi Manu I love u! Meus dias são mais felizes quando passo eles com você.",
+            26: "Pode ter certeza que onde você estiver, é onde eu quero estar.",
+            27: "Minha maior paixão é você Manu, cada segundo que passo ao seu lado é um sonho realizado. Ficar com você é a melhor coisa do mundo.",
+            28: "Oii bebezinha, obrigado por estar sempre comigo quando eu preciso, eu amo você e espero que eu possa sempre te ajudar como você faz comigo.",
+            29: "Oi minha gatinha linda, tenho um vício em você, me tremo todo so de pensar em ficar longe de ti Manu.",
+            30: "Bebezinha linda do Paulo, eu te amo de hoje até o infinito. 'When im not with you, think of you always'.",
+            31: "Eu quero passar minha vida toda ao seu lado Manu, cada segundo de cada minuto.",
+        },
+    };
+
+    function currentMonthKey() {
+        const now = new Date();
+        return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+    }
+
+    // Mês atual sempre primeiro, depois os meses do arquivo, do mais recente
+    // pro mais antigo.
+    function getAvailableMonths() {
+        const curKey = currentMonthKey();
+        const archiveKeys = Object.keys(pastMonthsArchive).filter(k => k !== curKey);
+        archiveKeys.sort((a, b) => b.localeCompare(a));
+        return [curKey, ...archiveKeys];
+    }
+
+    function monthLabel(key) {
+        const [year, month] = key.split("-").map(Number);
+        const name = MONTH_NAMES[month - 1];
+        return `${name.charAt(0).toUpperCase()}${name.slice(1)} ${year}`;
+    }
+
+    function populateMonthSelect() {
+        const select = document.getElementById("gallery-month-select");
+        const curKey = currentMonthKey();
+        const months = getAvailableMonths();
+        select.innerHTML = months.map(key => {
+            const label = monthLabel(key) + (key === curKey ? " (atual)" : "");
+            return `<option value="${key}">${label}</option>`;
+        }).join("");
+    }
+
+    function updateGallerySubtitle(key) {
+        const curKey = currentMonthKey();
+        const [year, month] = key.split("-").map(Number);
+        const monthName = MONTH_NAMES[month - 1];
+        if (key === curKey) {
+            document.getElementById("gallery-subtitle").innerText =
+                `Tudo que já te disse em ${monthName}`;
+        } else {
+            document.getElementById("gallery-subtitle").innerText =
+                `Nossas palavras de ${monthName} de ${year}`;
+        }
+    }
+
+    // Monta a lista de frases do mês selecionado. Pro mês atual, usa a mesma
+    // fonte da tela do dia (resolveMessageForDate), então frases novas
+    // aparecem sozinhas. Pros meses passados, usa o que estiver em
+    // pastMonthsArchive.
+    function renderGalleryForMonth(key) {
+        const list = document.getElementById("gallery-list");
+        const curKey = currentMonthKey();
+        const [year, month] = key.split("-").map(Number);
+
+        updateGallerySubtitle(key);
+
+        let entries = [];
+
+        if (key === curKey) {
+            const today = new Date().getDate();
+            for (let d = today; d >= 1; d--) {
+                entries.push({ day: d, text: resolveMessageForDate(d, month - 1) });
+            }
+        } else {
+            const monthData = pastMonthsArchive[key] || {};
+            const days = Object.keys(monthData).map(Number).sort((a, b) => b - a);
+            entries = days.map(d => ({ day: d, text: monthData[d] }));
+        }
+
+        if (entries.length === 0) {
+            list.innerHTML = `<p class="gallery-empty">Nenhuma frase guardada esse mês ainda.</p>`;
+            return;
+        }
+
+        list.innerHTML = entries.map(e => `
+            <div class="gallery-entry">
+                <div class="gallery-badge">${e.day}</div>
+                <div class="gallery-entry-content">
+                    <span class="gallery-date">${e.day} de ${MONTH_NAMES[month - 1]}</span>
+                    <p class="gallery-text">${e.text}</p>
+                </div>
+            </div>`).join("");
     }
 
     // 4. INTERAÇÕES E TRANSIÇÕES DE INTERFACE
     const slider = document.getElementById("unlock-slider");
     const messageScreen = document.getElementById("message-screen");
     const counterScreen = document.getElementById("counter-screen");
+    const galleryScreen = document.getElementById("gallery-screen");
 
     slider.addEventListener("input", function() {
         const val = this.value;
-        const maxOpacity = 0.25; 
+        const maxOpacity = 0.25;
         const dynamicOpacity = ((100 - val) / 100) * maxOpacity;
         document.documentElement.style.setProperty('--track-opacity', dynamicOpacity);
 
@@ -585,6 +1014,23 @@
             document.documentElement.style.setProperty('--track-opacity', 0.25);
         }, 600);
     }
+
+    function goToGallery() {
+        populateMonthSelect();
+        const curKey = currentMonthKey();
+        const monthSelect = document.getElementById("gallery-month-select");
+        monthSelect.value = curKey;
+        renderGalleryForMonth(curKey);
+        galleryScreen.classList.add("active");
+    }
+
+    function closeGallery() {
+        galleryScreen.classList.remove("active");
+    }
+
+    document.getElementById("gallery-month-select").addEventListener("change", function() {
+        renderGalleryForMonth(this.value);
+    });
 
     // SERVICE WORKER
     if ('serviceWorker' in navigator) {
