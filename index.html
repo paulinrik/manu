@@ -877,16 +877,16 @@
     // Fonte única da verdade: dado um dia (1-31) e mês (0-11), devolve a frase
     // correspondente. Usada tanto pela tela diária quanto pela Galeria — por
     // isso qualquer frase nova entra automaticamente na Galeria também.
-    function resolveMessageForDate(day, month) {
-        const key = `${month}-${day}`;
-        if (SPECIAL_DATES[key]) {
-            return SPECIAL_DATES[key];
-        }
-        const index = day - 1;
-        return (messages[index] !== undefined && messages[index] !== "")
-            ? messages[index]
-            : "Eu te amo, Manu. ❤️";
+  function resolveMessageForDate(day, month) {
+    const key = `${month}-${day}`;
+    if (SPECIAL_DATES[key]) {
+        return SPECIAL_DATES[key];
     }
+    const index = day; // Removido o "- 1" para igualar a chave ao dia real
+    return (messages[index] !== undefined && messages[index] !== "")
+        ? messages[index]
+        : "Eu te amo, Manu. ❤️";
+}
 
     let currentDailyMessage = "";
 
